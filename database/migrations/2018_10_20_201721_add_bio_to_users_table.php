@@ -15,7 +15,7 @@ class AddBioToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // add a bio field (STRING)
-            $table->string('bio');
+            $table->string('bio')->default('');
         });
     }
 
