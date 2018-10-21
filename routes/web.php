@@ -21,7 +21,6 @@ Route::get('/friends', function () {
 });
 
 Route::get('/users', 'UserController@index');
-Route::get('/users/search', 'UserController@search');
 
 Auth::routes();
 

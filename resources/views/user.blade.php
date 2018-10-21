@@ -3,7 +3,7 @@
     <head>
     </head>
     <body>
-        <form method="GET" action="/users/search">
+        <form method="GET" action="/users">
             <input type="text" name="name">
             <button type="submit">Search</button>
         </form>

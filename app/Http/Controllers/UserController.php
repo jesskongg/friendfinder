@@ -13,12 +13,7 @@ class UserController extends Controller
         return view('editprofile');
     }
 
-    public function index()
-    {
-        return view('user');
-    }
-
-    public function search(Request $request)
+    public function index(Request $request)
     {
         if ($request->name) {
             $users = User::where('name', $request->name)->select(['name', 'email'])->get();
