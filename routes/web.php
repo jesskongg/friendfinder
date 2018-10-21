@@ -15,11 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/friends', function () {
-    $friends = ['Jason', 'Jun', 'Nima', 'Kyle'];
-    return view('friendslist', ['friends' => $friends]);
-});
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::resource('friendships', 'FriendshipController');
