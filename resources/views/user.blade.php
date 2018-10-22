@@ -1,30 +1,43 @@
 <!DOCTYPE html>
 <html>
     <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script>
+            function getResult() {
+                $("#result").empty()
+                let name = $('#name')[0].value
+                let email = $('#email')[0].value
+                $.ajax({
+                    type: 'GET',
+                    url: '/filter',
+                    data: {
+                        name,
+                        email,
+                    },
+                    success: result => {
+                        for (let user of result.data) {
+                            $("#result").append(`<p>${user.name} - ${user.email}</p>`)
+                        }
+                    },
+                    error: result => console.log(data),
+                })
+                return false
+            }
+        </script>
     </head>
     <body>
         <strong>Filter</strong>
-        <form method="GET" action="/users">
+        <form method="get" onsubmit="return getResult()">
             <div>
-                <?php
-                    echo "Name: <input type='text' name='name' value={$name}>";
-                ?>
+                Name: <input id='name' type='text' name='name' value=''>
             </div>
             <div>
-                <?php
-                    echo "Email: <input type='text' name='email' value={$email}>";
-                ?>
+                Email: <input id='email' type='text' name='email' value=''>
             </div>
-            <button type="submit">Search</button>
+            <input type="submit" value="Search"/>
         </form>
-        <?php
-            if (isset($users)) {
-                echo "<p><strong> Results: </strong><p>";
-                foreach ($users as $user) {
-                    echo "<p> {$user->name} - {$user->email}";
-                }
-            }
-        ?>
+        <div id="result">
+        </div>
     </body>
 </html>
 

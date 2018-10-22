@@ -20,7 +20,8 @@ Route::get('/friends', function () {
     return view('friendslist', ['friends' => $friends]);
 });
 
-Route::get('/users', 'UserController@index');
+Route::get('/search', 'SearchController@index');
+Route::get('/filter', 'SearchController@filter');
 
 Auth::routes();
 
