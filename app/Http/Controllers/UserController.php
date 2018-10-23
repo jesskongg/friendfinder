@@ -47,13 +47,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
-        // dd($id);
-        // $userRecord = DB::table('users')->where('id', $id)->first();
-        // dd($userRecord);
-        // return view('showprofile', compact('userRecord'));
-        // $allUsers = DB::table('users')->get();
-        // dd($allUsers);
+        $userRecord = DB::table('users')->where('id', $id)->first();
+        return view('showprofile', compact('userRecord'));
     }
 
     /**
@@ -65,6 +60,8 @@ class UserController extends Controller
     public function edit($id)
     {
         //
+        $userRecord = DB::table('users')->where('id', $id)->first();
+        return view('editprofile', compact('userRecord'));
     }
 
     /**
@@ -77,6 +74,11 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $user = DB::table('users')
+                            ->where('id', $id)
+                            ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio]);
+                            
+        return redirect()->route('users.show', ['id' => $id]);
     }
 
     /**
