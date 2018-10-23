@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Course;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
@@ -12,7 +13,13 @@ class SearchController extends Controller
     // TODO: Move this to a controller that handles the dashboard
     public function index()
     {
-        return view('user');
+        $courses = Course::select(['department', 'number'])->get();
+        return view('welcome', ['courses' => $courses]);
+    }
+
+    public function users()
+    {
+        return view('users');
     }
 
     public function filter(Request $request)
