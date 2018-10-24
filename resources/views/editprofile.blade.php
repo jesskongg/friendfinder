@@ -13,10 +13,16 @@
       <label for="email">Email</label>
       <input type="email" name="email" id="email" value="{{ $userRecord->email }}">
       <br>
-      Bio<br>
-      <textarea rows="4" cols="25" name="bio" id="bio" value="{{ $userRecord->bio }}"></textarea>
+      <label for="major">Major</label>
+      <input type="text" name="major" id="major" value="{{ $userRecord->major }}">
       <br>
-      Check all that apply<br>
+      <label for="minor">Minor</label>
+      <input type="text" name="minor" id="minor" value="{{ $userRecord->minor }}">
+      <br>
+      Bio<br>
+      <textarea rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
+      <br>
+      Select all tags that apply to you<br>
       <input type="checkbox" name="selectedInterests[]" value="First Year" @if(in_array('First Year', $interests)) checked=checked @endif>First Year<br>
       <input type="checkbox" name="selectedInterests[]" value="High GPA" @if(in_array('High GPA', $interests)) checked=checked @endif>High GPA<br>
       <input type="checkbox" name="selectedInterests[]" value="Second Degree" @if(in_array('Second Degree', $interests)) checked=checked @endif>Second Degree<br>

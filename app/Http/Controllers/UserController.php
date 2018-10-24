@@ -100,7 +100,6 @@ class UserController extends Controller
         $user = User::where('id', $id)->first();
         $selected = $request->selectedInterests;
         if ($selected) {
-          $flipped = array_flip($selected);
           $interests = DB::table('interests')->get();
           foreach ($interests as $interest) {
             if (in_array($interest->type, $selected)) {
@@ -112,11 +111,14 @@ class UserController extends Controller
               $user->interests()->detach($interest->id);
             }
           }
+        // Remove all interests from user_interest table if no tags are selected (or all tags were unselected)
+        } else {
+          $user->interests()->detach();
         }
 
         DB::table('users')
                         ->where('id', $id)
-                        ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio]);
+                        ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio, 'major' => $request->major, 'minor' => $request->minor]);
 
         return redirect()->route('users.show', ['id' => $id]);
     }
