@@ -22,4 +22,6 @@ Route::get('/friends', function () {
 
 Auth::routes();
 
+Route::resource('users', 'UserController');
+
 Route::get('/home', 'HomeController@index')->name('home');
