@@ -18,6 +18,7 @@ Route::get('/friends', function () {
 });
 
 Route::get('/', 'SearchController@index');
+Route::get('/course', 'SearchController@courses');
 Route::get('/search/users', 'SearchController@users');
 Route::get('/filter', 'SearchController@filter');
 

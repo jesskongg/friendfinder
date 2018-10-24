@@ -17,6 +17,23 @@ class SearchController extends Controller
         return view('welcome', ['courses' => $courses]);
     }
 
+    public function courses(Request $request)
+    {
+        // TODO: get a list of students enrolling in this course
+        if ($request->department && $request->number) {
+            $course = Course::where('department', '=', $request->department)
+                            ->where('number', '=', $request->number)
+                            ->first();
+            return $course ? view('course', [
+                'department' => $course->department,
+                'number' => $course->number,
+                'description' => $course->description,
+            ]) : view('course');
+        } else {
+            return view('course');
+        }
+    }
+
     public function users()
     {
         return view('users');

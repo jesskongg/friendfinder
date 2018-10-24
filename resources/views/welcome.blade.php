@@ -14,12 +14,13 @@
                 font-size: 25px;
             }
         </style>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script defer>
             window.onload = function() {
                 var search = document.getElementById('search')
                 var results = document.getElementById('courses')
                 var templateContent = document.getElementById("coursestemplate").content
-                search.addEventListener('keyup', function handler(event) {
+                search.addEventListener('keyup', e => {
                     var input = new RegExp(search.value.trim(), 'i')
                     var options = templateContent.cloneNode(true)
                     var all = ""
@@ -32,7 +33,29 @@
                         }
                     }
                     results.appendChild(frag)
+                    if (e.keyCode === 13) {
+                        redirectCourse(e.target.value)
+                    }
                 });
+
+                search.addEventListener('input', e => {
+                    if (e.inputType === null || e.inputType === undefined) {
+                        redirectCourse(e.target.value)
+                    }
+                })
+
+                function redirectCourse (text) {
+                    let courseInfo = text.split('-')
+                    let department = courseInfo[0].toLowerCase()
+                    let number = courseInfo[1].toLowerCase()
+                    let form = document.createElement('form')
+                    form.action = '/course'
+                    form.method = 'get'
+                    form.innerHTML = `<input name="department" value="${department}"/>
+                                        <input name="number" value="${number}"/>`
+                    document.body.append(form)
+                    form.submit()
+                }
             }
         </script>
     </head>
