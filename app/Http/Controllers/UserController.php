@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\User;
+use App\Interest;
+
 
 
 class UserController extends Controller
@@ -47,8 +50,19 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        // Check if the current user has added any "interests" to their profile
+        $results = DB::table('user_interest')->where('user_id', $id)->get();
+        // If so, get those interests..
+        if($results) {
+          $interests = array();
+          foreach($results as $interest) {
+            $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
+            if (!in_array($getInterest->type, $interests))
+            array_push($interests, $getInterest->type);
+          }
+        }
         $userRecord = DB::table('users')->where('id', $id)->first();
-        return view('showprofile', compact('userRecord'));
+        return view('showprofile', compact('userRecord', 'interests'));
     }
 
     /**
@@ -59,9 +73,18 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        // Check if the current user has added any "interests" to their profile
+        $results = DB::table('user_interest')->where('user_id', $id)->get();
+        // If so, get those interests..
+        if($results) {
+          $interests = array();
+          foreach($results as $interest) {
+            $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
+            array_push($interests, $getInterest->type);
+          }
+        }
         $userRecord = DB::table('users')->where('id', $id)->first();
-        return view('editprofile', compact('userRecord'));
+        return view('editprofile', compact('userRecord', 'interests'));
     }
 
     /**
@@ -74,10 +97,27 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $user = DB::table('users')
-                            ->where('id', $id)
-                            ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio]);
-                            
+        $user = User::where('id', $id)->first();
+        $selected = $request->selectedInterests;
+        if ($selected) {
+          $flipped = array_flip($selected);
+          $interests = DB::table('interests')->get();
+          foreach ($interests as $interest) {
+            if (in_array($interest->type, $selected)) {
+              $interestExists = DB::table('user_interest')->where([['user_id', $id], ['interest_id', $interest->id]])->first();
+              if (!$interestExists) {
+                $user->interests()->attach($interest->id);
+              }
+            } else {
+              $user->interests()->detach($interest->id);
+            }
+          }
+        }
+
+        DB::table('users')
+                        ->where('id', $id)
+                        ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio]);
+
         return redirect()->route('users.show', ['id' => $id]);
     }
 
