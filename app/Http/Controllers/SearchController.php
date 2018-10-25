@@ -20,17 +20,17 @@ class SearchController extends Controller
 
     public function courses(Request $request)
     {
-        // TODO: get a list of students enrolling in this course
         if ($request->department && $request->number) {
             $course = Course::where('department', '=', $request->department)
                             ->where('number', '=', $request->number)
                             ->first();
             if ($course) {
+                // TODO: exposing ID might not be a good idea but whatever
                 $students = DB::table('enrollments')
                                 ->join('users', 'users.id', 'enrollments.user_id')
                                 ->join('courses', 'courses.id', 'enrollments.course_id')
                                 ->where('enrollments.course_id', '=', $course->id)
-                                ->select(['name', 'email'])
+                                ->select(['users.id', 'name', 'email'])
                                 ->get();
                 return view('course', [
                     'department' => $course->department,
