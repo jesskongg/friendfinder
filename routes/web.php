@@ -24,4 +24,6 @@ Route::get('/filter', 'SearchController@filter');
 
 Auth::routes();
 
+Route::resource('users', 'UserController');
+
 Route::get('/home', 'HomeController@index')->name('home');
