@@ -50,6 +50,19 @@ class UsersTableSeeder extends Seeder
             9 => 'lucy version 2',
         ];
 
+        $enrollments = [
+            0 => [],
+            1 => [544, 545, 546, 613],
+            2 => [555, 582, 123, 544],
+            3 => [555, 582, 123, 544],    
+            4 => [555, 582, 123, 544],    
+            5 => [555, 582, 123, 544],    
+            6 => [555, 582, 123, 544],    
+            7 => [555, 582, 123, 544],    
+            8 => [555, 582, 123, 544],    
+            9 => [555, 582, 123, 544],
+        ];
+
         for ($i = 0; $i < count($names); ++$i) {
             DB::table('users')->insert([
                 'name' => $names[$i],
@@ -57,6 +70,12 @@ class UsersTableSeeder extends Seeder
                 'password' => bcrypt('secret'),
                 'bio' => $bios[$i],
             ]);
-        }   
+            for ($j = 0; $j < count($enrollments[$i]); ++$j) {
+                DB::table('enrollments')->insert([
+                    'user_id' => $i,
+                    'course_id' => $enrollments[$i][$j],
+                ]);
+            }
+        }
     }
 }

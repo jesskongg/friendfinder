@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use App\Course;
+use App\Enrollment;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
@@ -24,11 +25,21 @@ class SearchController extends Controller
             $course = Course::where('department', '=', $request->department)
                             ->where('number', '=', $request->number)
                             ->first();
-            return $course ? view('course', [
-                'department' => $course->department,
-                'number' => $course->number,
-                'description' => $course->description,
-            ]) : view('course');
+            if ($course) {
+                $students = DB::table('enrollments')
+                                ->join('users', 'users.id', 'enrollments.user_id')
+                                ->join('courses', 'courses.id', 'enrollments.course_id')
+                                ->where('enrollments.course_id', '=', $course->id)
+                                ->select(['name', 'email'])
+                                ->get();
+                return view('course', [
+                    'department' => $course->department,
+                    'number' => $course->number,
+                    'description' => $course->description,
+                    'students' => $students,
+                ]);
+            }
+            return view('course');
         } else {
             return view('course');
         }

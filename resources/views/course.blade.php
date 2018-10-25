@@ -14,6 +14,12 @@
                 echo $department.' - ';
                 echo $number.' - ';
                 echo $description;
+                if (isset($students)) {
+                    echo "<p>Students:</p>";
+                    for ($i = 0; $i < count($students); ++$i) {
+                        echo $students[$i]->name . ' - ' . $students[$i]->email . '</br>';
+                    }
+                }
             } else {
                 echo "Course not found.";
             }
