@@ -17,7 +17,7 @@
                 if (isset($students)) {
                     echo "<p>Students:</p>";
                     for ($i = 0; $i < count($students); ++$i) {
-                        echo "<a href=/users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
+                        echo "<a href=users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
                     }
                 }
             } else {
