@@ -5,7 +5,11 @@
 <body>
   <h1>Profile for: {{ $userRecord->name }} </h1>
   @if(\Auth::User()->id !== $userRecord->id)
-  <button>Add Friend</button>
+  <form method="POST" action="../friendships">
+    @csrf
+    <input type="hidden" name="user" value={{$userRecord->id}} />
+    <button type="submit">Add Friend</button>
+  </form>
   @endif
   <p>Email: {{ $userRecord->email }}<p>
   <p>Major: {{ $userRecord->major }}<p>

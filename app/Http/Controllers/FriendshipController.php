@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Friendship;
+use App\User;
 use Illuminate\Http\Request;
+use Log;
+
 
 class FriendshipController extends Controller
 {
@@ -15,7 +18,8 @@ class FriendshipController extends Controller
     public function index()
     {
         //
-        $friendships = Friendship::all();
+        $user = \Auth::User();
+        $friendships = $user->getAllFriendships();
         return response()->json($friendships);
         
     }
@@ -38,7 +42,12 @@ class FriendshipController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // $bodyContent = $request->getContent();
+        $user = \Auth::User();
+        $recipient = User::find($request['user']);
+        $user->befriend($recipient);
+        
+        return redirect()->route('friendships.index');
     }
 
     /**
