@@ -11,11 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::get('/friends', function () {
+    $friends = ['Jason', 'Jun', 'Nima', 'Kyle'];
+    return view('friendslist', ['friends' => $friends]);
 });
 
+Route::get('/', 'SearchController@index');
+Route::get('/course', 'SearchController@courses');
+Route::get('/search/users', 'SearchController@users');
+Route::get('/filter', 'SearchController@filter');
+
 Auth::routes();
+
+Route::resource('users', 'UserController');
 
 Route::get('/home', 'HomeController@index')->name('home');
 

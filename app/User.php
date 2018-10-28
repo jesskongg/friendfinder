@@ -5,9 +5,19 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use App\Interest;
+
+
 
 class User extends Authenticatable
 {
+    // Added for creation of many-to-many relationship with Interests
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'user_interest');
+    }
+
     use Notifiable;
 
     /**
