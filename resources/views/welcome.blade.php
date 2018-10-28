@@ -49,7 +49,7 @@
                     let department = courseInfo[0].toLowerCase()
                     let number = courseInfo[1].toLowerCase()
                     let form = document.createElement('form')
-                    form.action = '/course'
+                    form.action = 'course'
                     form.method = 'get'
                     form.innerHTML = `<input name="department" value="${department}"/>
                                         <input name="number" value="${number}"/>`
