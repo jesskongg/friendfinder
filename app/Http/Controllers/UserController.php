@@ -114,11 +114,9 @@ class UserController extends Controller
           $user->interests()->detach();
         }
 
-        DB::table('users')
-                        ->where('id', $id)
-                        ->update(['name' => $request->name, 'email' => $request->email, 'bio' => $request->bio, 'major' => $request->major, 'minor' => $request->minor]);
-
-        return redirect()->route('users.show', ['id' => $id]);
+        $user->update($request->all());
+        return 200;
+        // return redirect()->route('users.show', ['id' => $id]); // ERR_TOO_MANY_REDIRECTS
     }
 
     /**
