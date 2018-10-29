@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+<meta http-equiv="refresh" content="3;url=/" />
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -15,6 +16,8 @@
                     @endif
 
                     You are logged in!
+                    Redirecting in 3 seconds...
+                    <div>
                 </div>
             </div>
         </div>
