@@ -94,7 +94,6 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $user = User::where('id', $id)->first();
         $selected = $request->selectedInterests;
         if ($selected) {
