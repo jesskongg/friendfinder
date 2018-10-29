@@ -5,6 +5,7 @@
 
 @section('scripts')
 <script defer>
+    // TODO: we may not want a request being made for every key input
     function func()
     {
         $("#result").empty();
@@ -42,10 +43,10 @@
                 echo "<a href=/users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
             }
         }
+        echo "<br/>Interest: <input id='interest' type='text' name='interest' value='' oninput='return func()'>";
     } else {
         echo "Course not found.";
     }
+    echo "<div id='result'></div>";
 ?>
-    <div id="result">
-    </div>
 @endsection()
