@@ -77,5 +77,12 @@ class UsersTableSeeder extends Seeder
                 ]);
             }
         }
+
+        DB::table('users')->insert([
+            'name' => 'test',
+            'email' => 'test@test.com',
+            'password' => bcrypt('test'),
+            'bio' => "test account",
+        ]);
     }
 }

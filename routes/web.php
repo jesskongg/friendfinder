@@ -21,6 +21,7 @@ Route::get('/', 'SearchController@index');
 Route::get('/course', 'SearchController@courses');
 Route::get('/search/users', 'SearchController@users');
 Route::get('/filter', 'SearchController@filter');
+Route::get('/course/filterByInterest', 'SearchController@filterByInterest');
 
 Auth::routes();
 
