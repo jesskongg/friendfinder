@@ -112,8 +112,12 @@ class UserController extends Controller
         } else {
           $user->interests()->detach();
         }
-
-        $user->update($request->all());
+        $user->fill($request->all());
+        // TODO: make major, minor and bio nullable
+        $user->major = $request->major ? $user->major : "";
+        $user->minor = $request->minor ? $user->minor : "";
+        $user->bio = $request->bio ? $user->bio : "";
+        $user->save();
         return 200;
         // return redirect()->route('users.show', ['id' => $id]); // ERR_TOO_MANY_REDIRECTS
     }
