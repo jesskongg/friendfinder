@@ -1,8 +1,6 @@
-<!DOCTYPE html>
-<head>
-  <title>Show Profile</title>
-</head>
-<body>
+@extends('layouts.app')
+
+@section('content')
   <h1>Profile for: {{ $userRecord->name }} </h1>
   <p>Email: {{ $userRecord->email }}<p>
   <p>Major: {{ $userRecord->major }}<p>
@@ -16,5 +14,4 @@
     @endforeach
   @endif
   </ul>
-
-</body>
+@endsection

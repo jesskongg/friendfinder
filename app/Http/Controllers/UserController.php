@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\DB;
 use App\User;
 use App\Interest;
 
-
-
 class UserController extends Controller
 {
     /**
@@ -133,4 +131,5 @@ class UserController extends Controller
     {
         //
     }
+    
 }

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <head>
   <title>Edit Profile</title>
+  @include('includes.navigation')
 </head>
 <body>
   <h1>Edit Profile</h1>
