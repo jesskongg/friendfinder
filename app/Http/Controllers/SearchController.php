@@ -6,11 +6,11 @@ use Illuminate\Http\Request;
 use App\User;
 use App\Course;
 use App\Enrollment;
+use App\Interest;
 use Illuminate\Support\Facades\DB;
 
 class SearchController extends Controller
 {
-
     // TODO: Move this to a controller that handles the dashboard
     public function index()
     {
@@ -47,7 +47,7 @@ class SearchController extends Controller
 
     public function users()
     {
-        return view('users');
+        return view('user');
     }
 
     public function filter(Request $request)
@@ -61,5 +61,32 @@ class SearchController extends Controller
             $users = $query->select($selections)->get();
         }
         return response()->json(['data' => $users], 200);
+    }
+
+    public function filterByInterest(Request $request)
+    {
+        $users = [];   
+        if ($request->interest)
+        {
+            /*
+            $course = Course::where('department', '=', $request->department)
+                ->where('number', '=', $request->number)
+                ->first();
+            $students = DB::table('enrollments')
+                            ->join('users', 'users.id', 'enrollments.user_id')
+                            ->join('courses', 'courses.id', 'enrollments.course_id')
+                            ->where('enrollments.course_id', '=', $course->id)
+                            ->select(['users.id', 'name', 'email'])
+                            ->get();
+            */
+
+            $users = DB::table('user_interest')
+                        ->join('users', 'users.id', 'user_interest.user_id')
+                        ->join('interests', 'interests.id', 'user_interest.interest_id')
+                        ->where('interests.type','=', $request->interest)
+                        ->select(['name','email','type','users.id'])
+                        ->get();                       
+        }
+        return response() -> json(['data' => $users], 200);
     }
 }
