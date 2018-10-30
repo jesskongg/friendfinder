@@ -20,7 +20,7 @@ class FriendshipController extends Controller
         //
         $user = \Auth::User();
         $friendships = $user->getAllFriendships();
-        return response()->json($friendships);
+        return view('showfriendships', compact('friendships'));
         
     }
 
