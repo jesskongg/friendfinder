@@ -21,7 +21,7 @@ class FriendshipController extends Controller
         $acceptedFriendships = $user->getAcceptedFriendships();
         $requestedFriendships = $user->getFriendRequests();
         $pendingFriendships = $user->getPendingFriendships();
-        return view('showfriendships', compact('acceptedFriendships', 'requestedFriendships', 'pendingFriendships'));
+        return view('showfriendships', compact('user', 'acceptedFriendships', 'requestedFriendships', 'pendingFriendships'));
     }
 
     /**
