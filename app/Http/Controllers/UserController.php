@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Interest;
 
@@ -71,18 +72,21 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        // Check if the current user has added any "interests" to their profile
-        $results = DB::table('user_interest')->where('user_id', $id)->get();
-        // If so, get those interests..
-        if($results) {
-          $interests = array();
-          foreach($results as $interest) {
-            $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
-            array_push($interests, $getInterest->type);
-          }
+      $user = Auth::user();
+      if ($user == null || $user->id != $id) 
+        return redirect('/');
+      // Check if the current user has added any "interests" to their profile
+      $results = DB::table('user_interest')->where('user_id', $id)->get();
+      // If so, get those interests..
+      if($results) {
+        $interests = array();
+        foreach($results as $interest) {
+          $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
+          array_push($interests, $getInterest->type);
         }
-        $userRecord = DB::table('users')->where('id', $id)->first();
-        return view('editprofile', compact('userRecord', 'interests'));
+      }
+      $userRecord = DB::table('users')->where('id', $id)->first();
+      return view('editprofile', compact('userRecord', 'interests'));
     }
 
     /**
@@ -98,6 +102,7 @@ class UserController extends Controller
         $selected = $request->selectedInterests;
         if ($selected) {
           $interests = DB::table('interests')->get();
+          // TODO: This will become MUCH slower as the interests table grow. We may want to do it using query rather than foreach.
           foreach ($interests as $interest) {
             if (in_array($interest->type, $selected)) {
               $interestExists = DB::table('user_interest')->where([['user_id', $id], ['interest_id', $interest->id]])->first();
@@ -118,8 +123,7 @@ class UserController extends Controller
         $user->minor = $request->minor ? $user->minor : "";
         $user->bio = $request->bio ? $user->bio : "";
         $user->save();
-        return 200;
-        // return redirect()->route('users.show', ['id' => $id]); // ERR_TOO_MANY_REDIRECTS
+        return redirect()->route('users.show', ['id' => $id]);
     }
 
     /**
