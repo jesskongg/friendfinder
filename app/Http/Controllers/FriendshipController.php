@@ -17,11 +17,11 @@ class FriendshipController extends Controller
      */
     public function index()
     {
-        //
         $user = \Auth::User();
-        $friendships = $user->getAllFriendships();
-        return view('showfriendships', compact('friendships'));
-        
+        $acceptedFriendships = $user->getAcceptedFriendships();
+        $requestedFriendships = $user->getFriendRequests();
+        $pendingFriendships = $user->getPendingFriendships();
+        return view('showfriendships', compact('acceptedFriendships', 'requestedFriendships', 'pendingFriendships'));
     }
 
     /**
