@@ -49,19 +49,34 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        // Check if the current user has added any "interests" to their profile
-        $results = DB::table('user_interest')->where('user_id', $id)->get();
-        // If so, get those interests..
-        if($results) {
-          $interests = array();
-          foreach($results as $interest) {
-            $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
-            if (!in_array($getInterest->type, $interests))
-            array_push($interests, $getInterest->type);
-          }
+
+      $userRecord = DB::table('users')->where('id', $id)->first();
+
+      // Check if the current user has added any "interests" to their profile
+      $results = DB::table('user_interest')->where('user_id', $id)->get();
+      // If so, get those interests..
+      if($results) {
+        $interests = array();
+        foreach($results as $interest) {
+          $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
+          if (!in_array($getInterest->type, $interests))
+          array_push($interests, $getInterest->type);
         }
-        $userRecord = DB::table('users')->where('id', $id)->first();
-        return view('showprofile', compact('userRecord', 'interests'));
+      }
+
+      // Check if the current user has added any enrolled courses to their profile
+      $results = DB::table('enrollments')->where('user_id', $id)->get();
+      // If so, get those courses...
+      if($results) {
+        $enrollments = array();
+        foreach($results as $enrollment) {
+          $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
+          if (!in_array($getEnrollment->id, $enrollments))
+          array_push($enrollments, $getEnrollment->department . ' ' . $getEnrollment->number);
+        }
+      }
+
+      return view('showprofile', compact('userRecord', 'interests', 'enrollments'));
     }
 
     /**
@@ -73,8 +88,23 @@ class UserController extends Controller
     public function edit($id)
     {
       $user = Auth::user();
-      if ($user == null || $user->id != $id) 
+      if ($user == null || $user->id != $id)
         return redirect('/');
+
+      // Check if the current user has added any enrolled courses to their profile
+      $results = DB::table('enrollments')->where('user_id', $id)->get();
+      // If so, get those courses...
+      if($results) {
+        $enrollments = array();
+        foreach($results as $enrollment) {
+          $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
+          if (!in_array($getEnrollment->id, $enrollments))
+          array_push($enrollments, array("course" => $getEnrollment->department . ' ' . $getEnrollment->number, "id" => $getEnrollment->id));
+          // array_push($enrollments, array("course" => "test", "id" => 5));
+          // dd($enrollments);
+        }
+      }
+
       // Check if the current user has added any "interests" to their profile
       $results = DB::table('user_interest')->where('user_id', $id)->get();
       // If so, get those interests..
@@ -86,7 +116,7 @@ class UserController extends Controller
         }
       }
       $userRecord = DB::table('users')->where('id', $id)->first();
-      return view('editprofile', compact('userRecord', 'interests'));
+      return view('editprofile', compact('userRecord', 'interests', 'enrollments'));
     }
 
     /**
@@ -123,8 +153,19 @@ class UserController extends Controller
         $user->minor = $request->minor ? $user->minor : "";
         $user->bio = $request->bio ? $user->bio : "";
         $user->save();
-        return redirect()->route('users.show', ['id' => $id]);
+        return redirect()->action('UserController@show', ['id' => $id]);
     }
+
+    public function removeCourse($user_id, $course_id) {
+
+      // dd($user_id);
+      $user = User::where('id', $user_id)->first();
+      // $course = DB::table('course')->where([['user_id', $user_id], ['course_id', $course_id]])->first();
+      $user->courses()->detach($course_id);
+
+      return redirect()->action('UserController@edit', ['id' => $user_id]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -136,5 +177,5 @@ class UserController extends Controller
     {
         //
     }
-    
+
 }

@@ -35,4 +35,14 @@
     <input type="checkbox" name="selectedInterests[]" value="Animation" @if(in_array('Animation', $interests)) checked=checked @endif>Animation<br>
     <input type="submit" name="Submit">
   </form>
+  <br>
+  <br>
+  <p>Enrolled Courses:</p>
+  @if($enrollments)
+  <ul>
+    @foreach($enrollments as $enrollment)
+      <li>{{ $enrollment["course"] }} <a href="{{ action("UserController@removeCourse", ["user_id" => $userRecord->id, "course_id" => $enrollment["id"]]) }}">Remove</a></li>
+    @endforeach
+  @endif
+
 @endsection()
