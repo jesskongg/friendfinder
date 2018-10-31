@@ -7,7 +7,11 @@
         $("#button").click(function(){
             // Clear a student list
             $("#result").empty();
-            let students = <?php echo json_encode($students) ?>;
+            let students = <?php
+                if (isset($students)){
+                    echo json_encode($students);
+                }
+            ?>;
 
             // Parse selected interets
             let interests = [];
