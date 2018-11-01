@@ -34,6 +34,16 @@ class FriendshipController extends Controller
         //
     }
 
+    public function confirm(Request $request)
+    {
+        $user = \Auth::User();
+        $friendship = Friendship::find($request['friendship']);
+        $sender = User::find($friendship->sender_id);
+        $user->acceptFriendRequest($sender);
+        
+        return redirect()->route('friendships.index');
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -84,14 +94,13 @@ class FriendshipController extends Controller
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Friendship  $friendship
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Friendship $friendship)
+    public function unfriend(Request $request)
     {
-        //
+        $friendship = Friendship::find($request['friendship']);
+        $sender = User::find($friendship->sender_id);
+        $recipient = User::find($friendship->recipient_id);
+        $recipient->unfriend($sender);
+        
+        return redirect()->route('friendships.index');
     }
 }

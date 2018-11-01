@@ -31,3 +31,5 @@ Route::get('/users/{id}',[
 Route::get('/users/{id}/edit', 'UserController@edit');
 
 Route::resource('friendships', 'FriendshipController');
+Route::post('/confirm-friendship', 'FriendshipController@confirm');
+Route::post('/remove-friendship', 'FriendshipController@unfriend');

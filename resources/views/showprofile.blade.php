@@ -7,7 +7,9 @@
       <form method="POST" action="../friendships">
         @csrf
         <input type="hidden" name="user" value={{$userRecord->id}} />
-        <button type="submit">Add Friend</button>
+				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+					<button type="submit">Add Friend</button>
+				@endif
       </form>
     @endif
 
