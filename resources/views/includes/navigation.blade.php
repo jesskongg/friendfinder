@@ -1,11 +1,11 @@
 <style>
-    li {
+    .navigation-menu li {
         float: left;
         display: inline;
         margin: 0px 10px 0px 10px;
     }
 </style>
-<ul>
+<ul class="navigation-menu">
     <li><a href="/" >Home</a></li>
     @guest
         <li>
@@ -20,6 +20,9 @@
         <li>Create a Meetup</li>
         <li>
             <a href="/users/{{Auth::user()->id}}">Profile</a>
+        </li>
+        <li>
+            <a href="/friendships">Friendships</a>
         </li>
         <li>
             <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
