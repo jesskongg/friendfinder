@@ -25,8 +25,10 @@
 	<h2>Friends</h2>
 	<ul>
 	@foreach ($acceptedFriendships as $friendship)
-		<li>{{$friendship->recipient->name}}
-		
+		<li><a href="{{ action('UserController@show', ['id' => $user->id]) }}"/>{{$friendship->recipient->name}}</a>
+
+			<!-- {{$friendship->recipient->name}} -->
+
 		<form action='/remove-friendship' method='POST'>
 			@csrf
 	        <input type="hidden" name="friendship" value={{$friendship->id}} />
