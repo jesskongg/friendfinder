@@ -29,7 +29,8 @@ Route::get('/users/{id}',[
     'uses' => 'UserController@show'
 ]);
 Route::get('/users/{id}/edit', 'UserController@edit');
-Route::get('/users/{user_id}/remove/{course_id}', [
-    'as' => 'users.removeCourse',
-    'uses' => 'UserController@removeCourse'
-]);
+// Route::get('/users/{user_id}/remove/{course_id}', [
+//     'as' => 'users.removeCourse',
+//     'uses' => 'UserController@removeCourse'
+// ]);
+Route::get('/users/{user_id}/remove/{course_id}','UserController@removeCourse');
