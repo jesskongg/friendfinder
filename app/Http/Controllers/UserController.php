@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Interest;
+use App\Course;
 
 class UserController extends Controller
 {
@@ -49,7 +50,6 @@ class UserController extends Controller
      */
     public function show($id)
     {
-
       $userRecord = DB::table('users')->where('id', $id)->first();
 
       // Check if the current user has added any "interests" to their profile
@@ -72,7 +72,7 @@ class UserController extends Controller
         foreach($results as $enrollment) {
           $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
           if (!in_array($getEnrollment->id, $enrollments))
-          array_push($enrollments, $getEnrollment->department . ' ' . $getEnrollment->number);
+          array_push($enrollments, strtoupper($getEnrollment->department) . ' ' . $getEnrollment->number);
         }
       }
 
@@ -99,9 +99,7 @@ class UserController extends Controller
         foreach($results as $enrollment) {
           $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
           if (!in_array($getEnrollment->id, $enrollments))
-          array_push($enrollments, array("course" => $getEnrollment->department . ' ' . $getEnrollment->number, "id" => $getEnrollment->id));
-          // array_push($enrollments, array("course" => "test", "id" => 5));
-          // dd($enrollments);
+          array_push($enrollments, array("course" => strtoupper($getEnrollment->department) . ' ' . $getEnrollment->number, "id" => $getEnrollment->id));
         }
       }
 
@@ -116,7 +114,8 @@ class UserController extends Controller
         }
       }
       $userRecord = DB::table('users')->where('id', $id)->first();
-      return view('editprofile', compact('userRecord', 'interests', 'enrollments'));
+
+      return view('editprofile', compact('userRecord', 'interests', 'enrollments', 'courses'));
     }
 
     /**
@@ -165,6 +164,31 @@ class UserController extends Controller
 
       return redirect()->action('UserController@edit', ['id' => $user_id]);
     }
+
+    public function addCourse(Request $request, $user_id) {
+
+
+      $validatedData = $request->validate([
+        'course' => 'regex:/.{4}\s\d{3}/',
+      ]);
+      $submittedCourse = $request->course;
+      $exploded = explode(" ", $submittedCourse);
+      $dept = $exploded[0];
+      $courseNum = $exploded[1];
+      $courseID = DB::table('courses')->where([['department', $dept], ['number', $courseNum]])->value('id');
+      if($courseID) {
+        $user = User::where('id', $user_id)->first();
+        $user->courses()->attach($courseID);
+      } else {
+          $error = \Illuminate\Validation\ValidationException::withMessages([
+         'invalid_course' => ['Please enter a valid course'],
+      ]);
+        throw $error;
+      }
+
+      return redirect()->action('UserController@edit', ['id' => $user_id]);
+    }
+
 
 
     /**
