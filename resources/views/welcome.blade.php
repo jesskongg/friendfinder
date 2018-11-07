@@ -4,9 +4,9 @@
     <style>
         .search_center {
             position:absolute;
-            top:40%; 
-            left:50%; 
-            height: 50px; 
+            top:40%;
+            left:50%;
+            height: 50px;
             width: 300px;
             transform: translate(-50%, -50%);
             font-size: 25px;
@@ -36,11 +36,8 @@
                 }
             }
             results.appendChild(frag)
-            if (e.keyCode === 13) {
-                redirectCourse(e.target.value)
-            }
         });
-
+        // What is this doing?
         search.addEventListener('input', e => {
             if (e.inputType === null || e.inputType === undefined) {
                 redirectCourse(e.target.value)
@@ -48,7 +45,7 @@
         })
 
         function redirectCourse (text) {
-            let courseInfo = text.split('-')
+            let courseInfo = text.split(' ')
             let department = courseInfo[0].toLowerCase()
             let number = courseInfo[1].toLowerCase()
             let form = document.createElement('form')
@@ -67,12 +64,12 @@
 <template id="coursestemplate">
     <?php
         foreach ($courses as $course) {
-            $value = strtoupper($course->department) . "-" . strtoupper($course->number);
+            $value = strtoupper($course->department) . " " . strtoupper($course->number);
             echo "<option value='$value'>";
         }
     ?>
 </template>
-<input id="search" type="text" name="search" list="courses" class="search_center" placeholder="Eg. CMPT-470"/>
+<input id="search" type="text" name="search" list="courses" class="search_center" placeholder="Eg. CMPT 470"/>
 <datalist id="courses">
 </datalist>
 @endsection

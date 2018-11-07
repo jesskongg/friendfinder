@@ -15,7 +15,7 @@
             data: {
                 interest,
                 department,
-                number,                     
+                number,
             },
             success: result => {
                 for (let user of result.data) {
