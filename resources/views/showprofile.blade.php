@@ -10,16 +10,13 @@
   	@if($interests)
   	<ul>
     	@foreach($interests as $interest)
-    		<li>{{ $interest }}</li>
+    		<li>{{ $interest }}  &#x2611;</li>
     	@endforeach
   	@endif
 	  </ul>
-  	@if (Auth::user() && Auth::user()->id == $userRecord->id)
-  		<a href="/users/{{Auth::user()->id}}/edit">Edit</a>
-  	@endif
   <br>
   <br>
-    <p>Enrolled Courses:</p>
+    <p>Enrolled Courses</p>
     @if($enrollments)
     <ul>
       @foreach($enrollments as $enrollment)
@@ -27,4 +24,9 @@
       @endforeach
     @endif
     </ul>
+  <br>
+  <br>
+  @if (Auth::user() && Auth::user()->id == $userRecord->id)
+    <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+  @endif
 @endsection

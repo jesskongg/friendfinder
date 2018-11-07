@@ -1,5 +1,7 @@
 @extends('layouts.app')
 
+@section('styles')
+
 @section('content')
 
 <h1>Edit Profile</h1>
@@ -12,6 +14,7 @@
   <label for="email">Email</label>
   <input type="email" name="email" id="email" value="{{ $userRecord->email }}">
   <br>
+  <!-- TODO: replace textbox with dept datalist -->
   <label for="major">Major</label>
   <input type="text" name="major" id="major" value="{{ $userRecord->major }}">
   <br>

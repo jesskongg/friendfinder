@@ -178,7 +178,7 @@ class UserController extends Controller
       $courseID = DB::table('courses')->where([['department', $dept], ['number', $courseNum]])->value('id');
       if($courseID) {
         $user = User::where('id', $user_id)->first();
-        $user->courses()->attach($courseID);
+        $user->courses()->syncWithoutDetaching([$courseID]);
       } else {
           $error = \Illuminate\Validation\ValidationException::withMessages([
          'invalid_course' => ['Please enter a valid course'],
