@@ -63,7 +63,7 @@
 
 <?php if (isset($department) && isset($number) && isset($description)): ?>
     <?php
-        echo $department.' - ';
+        echo strtoupper($department).' - ';
         echo $number.' - ';
         echo $description;
     ?>
@@ -91,6 +91,7 @@
                     echo "<a href=/users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
                 }
             ?>
+        </div>
     <?php endif; ?>
 <?php else: ?>
     <h1>Course not found</h1>
