@@ -9,10 +9,15 @@
   @method('PUT')
   @csrf
   <label for="name">Name</label>
-  <input type="text" name="name" id="name" value="{{ $userRecord->name }}">
+  <input type="text" name="name" id="name" value="{{ $userRecord->name }}" required>
   <br>
+  @if ($errors->has('email'))
+    <div class="alert alert-danger">
+      {{ $errors->first('email') }}
+    </div>
+  @endif
   <label for="email">Email</label>
-  <input type="email" name="email" id="email" value="{{ $userRecord->email }}">
+  <input type="email" name="email" id="email" value="{{ $userRecord->email }}" required>
   <br>
   <!-- TODO: replace textbox with dept datalist -->
   <label for="major">Major</label>
@@ -42,19 +47,25 @@
 <br>
 <br>
 <h1>Add a Course</h1>
-@if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
+@if ($errors->has('course'))
+  <div class="alert alert-danger">
+    {{ $errors->first('course') }}
+  </div>
+@endif
+@if ($errors->has('invalid_course'))
+  <div class="alert alert-danger">
+    {{ $errors->first('invalid_course') }}
+  </div>
+@endif
+@if ($errors->has('duplicate_course'))
+  <div class="alert alert-danger">
+    {{ $errors->first('duplicate_course') }}
+  </div>
 @endif
 <form action="{{ action("UserController@addCourse", $userRecord->id ) }}" method="POST">
   @csrf
   <label for="name">Course Code (ie: CMPT 470)</label>
-  <input type="text" name="course" id="course">
+  <input type="text" name="course" id="course" required>
   <br>
   <input type="submit" name="Submit">
 </form>

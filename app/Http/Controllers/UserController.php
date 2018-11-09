@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Interest;
 use App\Course;
+use Validator;
+use Illuminate\Validation\Rule;
+
 
 class UserController extends Controller
 {
@@ -18,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -28,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -39,7 +42,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -128,6 +131,15 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
+
+        Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($id),
+            ],
+        ])->validate();
+
         $selected = $request->selectedInterests;
         if ($selected) {
           $interests = DB::table('interests')->get();
@@ -157,9 +169,7 @@ class UserController extends Controller
 
     public function removeCourse($user_id, $course_id) {
 
-      // dd($user_id);
       $user = User::where('id', $user_id)->first();
-      // $course = DB::table('course')->where([['user_id', $user_id], ['course_id', $course_id]])->first();
       $user->courses()->detach($course_id);
 
       return redirect()->action('UserController@edit', ['id' => $user_id]);
@@ -176,19 +186,27 @@ class UserController extends Controller
       $dept = $exploded[0];
       $courseNum = $exploded[1];
       $courseID = DB::table('courses')->where([['department', $dept], ['number', $courseNum]])->value('id');
+      $alreadyExists = DB::table('enrollments')->where([['course_id', $courseID], ['user_id', $user_id]])->first();
+      // dd($alreadyExists);
+      if($alreadyExists) {
+        $error = \Illuminate\Validation\ValidationException::withMessages([
+       'duplicate_course' => ['You have already added this course.'],
+        ]);
+        // dd($error);
+        throw $error;
+      }
       if($courseID) {
         $user = User::where('id', $user_id)->first();
         $user->courses()->syncWithoutDetaching([$courseID]);
       } else {
           $error = \Illuminate\Validation\ValidationException::withMessages([
          'invalid_course' => ['Please enter a valid course'],
-      ]);
+          ]);
         throw $error;
       }
 
       return redirect()->action('UserController@edit', ['id' => $user_id]);
     }
-
 
 
     /**
@@ -199,7 +217,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Not needed.
     }
 
 }
