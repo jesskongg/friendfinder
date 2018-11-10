@@ -96,9 +96,9 @@ class UserController extends Controller
 
       // Check if the current user has added any enrolled courses to their profile
       $results = DB::table('enrollments')->where('user_id', $id)->get();
+      $enrollments = array();
       // If so, get those courses...
       if($results) {
-        $enrollments = array();
         foreach($results as $enrollment) {
           $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
           if (!in_array($getEnrollment->id, $enrollments))
@@ -108,9 +108,9 @@ class UserController extends Controller
 
       // Check if the current user has added any "interests" to their profile
       $results = DB::table('user_interest')->where('user_id', $id)->get();
+      $interests = array();
       // If so, get those interests..
       if($results) {
-        $interests = array();
         foreach($results as $interest) {
           $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
           array_push($interests, $getInterest->type);
@@ -118,7 +118,15 @@ class UserController extends Controller
       }
       $userRecord = DB::table('users')->where('id', $id)->first();
 
-      return view('editprofile', compact('userRecord', 'interests', 'enrollments', 'courses'));
+      // Get listing of all interests in the DB for user to view list of available options
+      $dbInterests = DB::table('interests')->get();
+      // dd($dbInterests[0]->type);
+      // if(in_array($dbInterests[0]->type, $interests)) {
+      //   dd($dbInterests[0]->type);
+      // }
+
+
+      return view('editprofile', compact('userRecord', 'interests', 'dbInterests', 'enrollments', 'courses'));
     }
 
     /**
