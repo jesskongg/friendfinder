@@ -18,6 +18,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" defer></script>
 <script defer>
     window.onload = function() {
+        // adapted from: https://stackoverflow.com/questions/15097563/limit-total-entries-displayed-by-datalist
         var search = document.getElementById('search')
         var results = document.getElementById('courses')
         // WARNING: template tag's id seem to be affected after using section
