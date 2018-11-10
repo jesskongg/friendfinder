@@ -1,7 +1,16 @@
 @extends('layouts.app')
 
 @section('content')
-	<h1>Profile for: {{ $userRecord->name }} </h1>
+  	<h1>Profile for: {{ $userRecord->name }} </h1>
+    @if(\Auth::User()->id !== $userRecord->id)
+      <form method="POST" action="../friendships">
+        @csrf
+        <input type="hidden" name="user" value={{$userRecord->id}} />
+				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+					<button type="submit">Add Friend</button>
+				@endif
+      </form>
+    @endif
   	<p>Email: {{ $userRecord->email }}<p>
   	<p>Major: {{ $userRecord->major }}<p>
   	<p>Minor: {{ $userRecord->minor }}<p>

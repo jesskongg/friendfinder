@@ -25,14 +25,7 @@ Route::resource('users', 'UserController');
 Route::get('/users/{user_id}/remove/{course_id}','UserController@removeCourse');
 Route::post('/users/{user_id}/add','UserController@addCourse');
 
-// Route::put('/users/{id}', 'UserController@update');
-// Route::get('/users/{id}', 'UserController@show');
-// Route::get('/users/{id}',[
-//     'as' => 'users.show',
-//     'uses' => 'UserController@show'
-// ]);
-// Route::get('/users/{id}/edit', 'UserController@edit');
-// // Route::get('/users/{user_id}/remove/{course_id}', [
-// //     'as' => 'users.removeCourse',
-// //     'uses' => 'UserController@removeCourse'
-// // ]);
+
+Route::resource('friendships', 'FriendshipController');
+Route::post('/confirm-friendship', 'FriendshipController@confirm');
+Route::post('/remove-friendship', 'FriendshipController@unfriend');
