@@ -25,7 +25,7 @@
 	<h2>Friends</h2>
 	<ul>
 	@foreach ($acceptedFriendships as $friendship)
-		<li><a href="{{ action('UserController@show', ['id' => $user->id]) }}"/>{{$friendship->recipient->name}}</a>
+		<li><a href="{{ action('UserController@show', ['id' => $friendship->recipient->id]) }}"/>{{$friendship->recipient->name}}</a>
 
 			<!-- {{$friendship->recipient->name}} -->
 
