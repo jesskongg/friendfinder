@@ -18,7 +18,7 @@ class AdminLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest:admin');
+        $this->middleware('guest:admin')->except('logout');
     }
 
     /**
@@ -53,15 +53,18 @@ class AdminLoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin-welcome';
+    // protected $redirectTo = '/admin-welcome';
 
-    public function adminLogout(Request $request)
+    public function logout(Request $request)
     {
         Auth::guard('admin')->logout();
 
-        $request->session()->invalidate();
+        // $request->session()->invalidate();
 
-        return $this->loggedOut($request) ?: redirect('/');
+        // return $this->loggedOut($request) ?: redirect('/');
+
+        return redirect('/');
+
     }
 
 }

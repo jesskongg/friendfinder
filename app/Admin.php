@@ -6,6 +6,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 # Code for admin related features adapted from: https://medium.freecodecamp.org/multiple-authentication-in-laravel-5-6-admin-and-user-3b3efe6da999
+
 class Admin extends Authenticatable
 {
     use Notifiable;
