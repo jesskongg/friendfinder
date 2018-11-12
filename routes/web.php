@@ -20,8 +20,9 @@ Route::get('/search/users', 'SearchController@users');
 Route::get('/filter', 'SearchController@filter');
 Route::get('/course/filterByInterest', 'SearchController@filterByInterest');
 
-// Specific routes to UserController resource controller
 Route::resource('users', 'UserController');
+
+// Specific routes to UserController resource controller
 Route::get('/users/{user_id}/remove/{course_id}','UserController@removeCourse');
 Route::post('/users/{user_id}/add','UserController@addCourse');
 
