@@ -29,6 +29,10 @@ class InterestsTableSeeder extends Seeder
         ]);
 
         DB::table('interests')->insert([
+            'type' => 'International'
+        ]);
+
+        DB::table('interests')->insert([
             'type' => 'Blockchain'
         ]);
 

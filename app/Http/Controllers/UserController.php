@@ -7,6 +7,10 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Interest;
+use App\Course;
+use Validator;
+use Illuminate\Validation\Rule;
+
 
 class UserController extends Controller
 {
@@ -17,7 +21,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -27,7 +31,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -38,7 +42,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Not needed.
     }
 
     /**
@@ -49,19 +53,33 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        // Check if the current user has added any "interests" to their profile
-        $results = DB::table('user_interest')->where('user_id', $id)->get();
-        // If so, get those interests..
-        if($results) {
-          $interests = array();
-          foreach($results as $interest) {
-            $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
-            if (!in_array($getInterest->type, $interests))
-            array_push($interests, $getInterest->type);
-          }
+      $userRecord = DB::table('users')->where('id', $id)->first();
+
+      // Check if the current user has added any "interests" to their profile
+      $results = DB::table('user_interest')->where('user_id', $id)->get();
+      // If so, get those interests..
+      if($results) {
+        $interests = array();
+        foreach($results as $interest) {
+          $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
+          if (!in_array($getInterest->type, $interests))
+          array_push($interests, $getInterest->type);
         }
-        $userRecord = DB::table('users')->where('id', $id)->first();
-        return view('showprofile', compact('userRecord', 'interests'));
+      }
+
+      // Check if the current user has added any enrolled courses to their profile
+      $results = DB::table('enrollments')->where('user_id', $id)->get();
+      // If so, get those courses...
+      if($results) {
+        $enrollments = array();
+        foreach($results as $enrollment) {
+          $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
+          if (!in_array($getEnrollment->id, $enrollments))
+          array_push($enrollments, strtoupper($getEnrollment->department) . ' ' . $getEnrollment->number);
+        }
+      }
+
+      return view('showprofile', compact('userRecord', 'interests', 'enrollments'));
     }
 
     /**
@@ -73,20 +91,42 @@ class UserController extends Controller
     public function edit($id)
     {
       $user = Auth::user();
-      if ($user == null || $user->id != $id) 
+      if ($user == null || $user->id != $id)
         return redirect('/');
+
+      // Check if the current user has added any enrolled courses to their profile
+      $results = DB::table('enrollments')->where('user_id', $id)->get();
+      $enrollments = array();
+      // If so, get those courses...
+      if($results) {
+        foreach($results as $enrollment) {
+          $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
+          if (!in_array($getEnrollment->id, $enrollments))
+          array_push($enrollments, array("course" => strtoupper($getEnrollment->department) . ' ' . $getEnrollment->number, "id" => $getEnrollment->id));
+        }
+      }
+
       // Check if the current user has added any "interests" to their profile
       $results = DB::table('user_interest')->where('user_id', $id)->get();
+      $interests = array();
       // If so, get those interests..
       if($results) {
-        $interests = array();
         foreach($results as $interest) {
           $getInterest = DB::table('interests')->where('id', $interest->interest_id)->first();
           array_push($interests, $getInterest->type);
         }
       }
       $userRecord = DB::table('users')->where('id', $id)->first();
-      return view('editprofile', compact('userRecord', 'interests'));
+
+      // Get listing of all interests in the DB for user to view list of available options
+      $dbInterests = DB::table('interests')->get();
+      // dd($dbInterests[0]->type);
+      // if(in_array($dbInterests[0]->type, $interests)) {
+      //   dd($dbInterests[0]->type);
+      // }
+
+
+      return view('editprofile', compact('userRecord', 'interests', 'dbInterests', 'enrollments', 'courses'));
     }
 
     /**
@@ -99,6 +139,15 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::where('id', $id)->first();
+
+        Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => [
+                'required',
+                Rule::unique('users')->ignore($id),
+            ],
+        ])->validate();
+
         $selected = $request->selectedInterests;
         if ($selected) {
           $interests = DB::table('interests')->get();
@@ -123,8 +172,50 @@ class UserController extends Controller
         $user->minor = $request->minor ? $user->minor : "";
         $user->bio = $request->bio ? $user->bio : "";
         $user->save();
-        return redirect()->route('users.show', ['id' => $id]);
+        return redirect()->action('UserController@show', ['id' => $id]);
     }
+
+    public function removeCourse($user_id, $course_id) {
+
+      $user = User::where('id', $user_id)->first();
+      $user->courses()->detach($course_id);
+
+      return redirect()->action('UserController@edit', ['id' => $user_id]);
+    }
+
+    public function addCourse(Request $request, $user_id) {
+
+
+      $validatedData = $request->validate([
+        'course' => 'regex:/.{4}\s\d{3}/',
+      ]);
+      $submittedCourse = $request->course;
+      $exploded = explode(" ", $submittedCourse);
+      $dept = $exploded[0];
+      $courseNum = $exploded[1];
+      $courseID = DB::table('courses')->where([['department', $dept], ['number', $courseNum]])->value('id');
+      $alreadyExists = DB::table('enrollments')->where([['course_id', $courseID], ['user_id', $user_id]])->first();
+      // dd($alreadyExists);
+      if($alreadyExists) {
+        $error = \Illuminate\Validation\ValidationException::withMessages([
+       'duplicate_course' => ['You have already added this course.'],
+        ]);
+        // dd($error);
+        throw $error;
+      }
+      if($courseID) {
+        $user = User::where('id', $user_id)->first();
+        $user->courses()->syncWithoutDetaching([$courseID]);
+      } else {
+          $error = \Illuminate\Validation\ValidationException::withMessages([
+         'invalid_course' => ['Please enter a valid course'],
+          ]);
+        throw $error;
+      }
+
+      return redirect()->action('UserController@edit', ['id' => $user_id]);
+    }
+
 
     /**
      * Remove the specified resource from storage.
@@ -134,7 +225,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Not needed.
     }
-    
+
 }

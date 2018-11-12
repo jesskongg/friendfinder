@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Hootlex\Friendships\Traits\Friendable;
 use App\Interest;
+use App\Course;
+
 
 class User extends Authenticatable
 {
@@ -23,7 +25,7 @@ class User extends Authenticatable
 
     public function courses()
     {
-        return $this->belongsToMany('App\Course', 'enrollment');
+        return $this->belongsToMany(Course::class, 'enrollments');
     }
 
     /**
