@@ -29,3 +29,6 @@ Route::post('/users/{user_id}/add','UserController@addCourse');
 Route::resource('friendships', 'FriendshipController');
 Route::post('/confirm-friendship', 'FriendshipController@confirm');
 Route::post('/remove-friendship', 'FriendshipController@unfriend');
+
+
+?>
