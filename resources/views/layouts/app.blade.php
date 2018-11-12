@@ -29,7 +29,11 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('styles')
     @yield('scripts')
-    @include('includes.navigation')
+    @if($user = Auth::guard('admin')->check())
+      @include('includes.admin-navigation')
+    @else
+      @include('includes.navigation')
+    @endif
 </head>
 <body>
     <div id="app">
