@@ -60,30 +60,31 @@
 @endsection()
 
 @section('content')
-
 <?php if (isset($department) && isset($number) && isset($description)): ?>
     <?php
+        echo "<h3>";
         echo strtoupper($department).' - ';
         echo $number.' - ';
         echo $description;
+        echo "</h3>";
     ?>
     <?php if (isset($students)): ?>
         <form>
-            <fieldset>
-                <legend>Filters</legend>
-                <div>
-                    <?php
-                        // Currently, the page lists all interest types from DB, but later we can modify it to only list interests of the current user 
-                        for ($i = 0; $i < count($interests); $i++)
-                        {
-                            echo "<input type='checkbox' value='{$interests[$i]->type}'>{$interests[$i]->type}<br/>";
-                        }
-                    ?>
-                    Others: <input id="others" type="textbox" name="others" value=""><br/>
-                    <input type="button" id="button" value="Search">                  
+            <h5>Filters</h5>
+            <?php
+                for ($i = 0; $i < count($interests); $i++){
+                    echo "<input type='checkbox' value='{$interests[$i]->type}'> {$interests[$i]->type}<br/>";
+                }
+            ?>
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <label for="major">Others</label>
+                    <input class="form-control" id="others" type="textbox" name="others" value=""><br/>
+                    <input class="btn btn-success" type="button" id="button" value="Search">              
                 </div>
-            </fieldset>
+            </div>
         </form>
+        <h5>Students</h5>
         <div id="result">
             <?php
                 for ($i = 0; $i < count($students); ++$i) 
@@ -96,4 +97,4 @@
 <?php else: ?>
     <h1>Course not found</h1>
 <?php endif; ?>
-
+@endsection()

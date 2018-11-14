@@ -33,7 +33,7 @@
     @include('includes.navigation')
 </head>
 <body>
-    <div id="app">
+    <div id="app" class="container-fluid">
         <main class="py-4">
             @yield('content')
         </main>
