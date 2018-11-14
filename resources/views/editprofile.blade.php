@@ -4,40 +4,52 @@
 
 @section('content')
 
-<h1>Edit Profile</h1>
+<h3>Edit Profile</h3>
 <form action="{{ action("UserController@update", $userRecord->id ) }}" method="POST">
   @method('PUT')
   @csrf
-  <label for="name">Name</label>
-  <input type="text" name="name" id="name" value="{{ $userRecord->name }}" required>
-  <br>
-  @if ($errors->has('email'))
-    <div class="alert alert-danger">
-      {{ $errors->first('email') }}
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="name">Name</label>
+      <input class="form-control" type="text" name="name" id="name" value="{{ $userRecord->name }}" required>
     </div>
-  @endif
-  <label for="email">Email</label>
-  <input type="email" name="email" id="email" value="{{ $userRecord->email }}" required>
-  <br>
-  <!-- TODO: replace textbox with dept datalist -->
-  <label for="major">Major</label>
-  <input type="text" name="major" id="major" value="{{ $userRecord->major }}">
-  <br>
-  <label for="minor">Minor</label>
-  <input type="text" name="minor" id="minor" value="{{ $userRecord->minor }}">
-  <br>
-  Bio<br>
-  <textarea rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
-  <br>
+    @if ($errors->has('email'))
+      <div class="alert alert-danger">
+        {{ $errors->first('email') }}
+      </div>
+    @endif
+    <div class="form-group col-md-4">
+      <label for="email">Email</label>
+      <input class="form-control" type="email" name="email" id="email" value="{{ $userRecord->email }}" required>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="major">Major</label>
+      <input class="form-control" type="text" name="major" id="major" value="{{ $userRecord->major }}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="minor">Minor</label>
+      <input class="form-control" type="text" name="minor" id="minor" value="{{ $userRecord->minor }}">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-8">
+      <label for="bio">Bio</label>
+      <textarea class="form-control" rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
+    </div>
+  </div>
   Select all tags that apply to you<br>
   @foreach ($dbInterests as $interest)
-    <input type="checkbox" name="selectedInterests[]" value="{{ $interest->type }}" {{in_array($interest->type,$interests)?'checked':''}}>{{ $interest->type }}<br>
+    <input type="checkbox" name="selectedInterests[]" value="{{ $interest->type }}" {{in_array($interest->type,$interests)?'checked':''}}> {{ $interest->type }}<br>
   @endforeach
-  <input type="submit" name="Submit">
+  <input class="btn btn-success" type="submit" name="Submit">
 </form>
 <br>
 <br>
-<h1>Add a Course</h1>
+<h3>Add a Course</h3>
 @if ($errors->has('course'))
   <div class="alert alert-danger">
     {{ $errors->first('course') }}
@@ -55,10 +67,13 @@
 @endif
 <form action="{{ action("UserController@addCourse", $userRecord->id ) }}" method="POST">
   @csrf
-  <label for="name">Course Code (ie: CMPT 470)</label>
-  <input type="text" name="course" id="course" required>
-  <br>
-  <input type="submit" name="Submit">
+  <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="name">Course Code (ie: CMPT 470)</label>
+      <input class="form-control" type="text" name="course" id="course" required>
+    </div>
+  </div>
+  <input class="btn btn-success" type="submit" name="Submit">
 </form>
 <br>
 <br>
@@ -70,8 +85,5 @@
   @endforeach
 @endif
 </ul>
-<br>
-<br>
-
 
 @endsection

@@ -5,32 +5,22 @@
         margin: 0px 10px 0px 10px;
     }
 </style>
-<ul class="navigation-menu">
-    <li><a href="/" >Home</a></li>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="nav-link text-light" href="/" >Home</a>
     @guest
-        <li>
-            <a href="{{ route('login') }}">{{ __('Login') }}</a>
-        </li>
-        <li>
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}">{{ __('Register') }}</a>
-            @endif
-        </li>
+        <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
+        @if (Route::has('register'))
+            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+        @endif
     @else
-        <li>Create a Meetup</li>
-        <li>
-            <a href="/users/{{Auth::user()->id}}">Profile</a>
-        </li>
-        <li>
-            <a href="/friendships">Friendships</a>
-        </li>
-        <li>
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                @csrf
-            </form>
-        </li>
+        Create a Meetup
+        <a class="nav-link text-light" href="/users/{{Auth::user()->id}}">Profile</a>
+        <a class="nav-link text-light" href="/friendships">Friendships</a>
+        <a class="nav-link text-light" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            {{ __('Logout') }}
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
     @endguest
-</ul>
+</nav>

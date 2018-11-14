@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-	<h1>Friendships</h1>
-	<h2>Requests</h2>
+	<h3>Friendships</h3>
+	<h4>Requests</h4>
 	<ul>
 	@foreach ($requestedFriendships as $friendship)
 		<li>{{$friendship->sender->name}}
@@ -14,7 +14,7 @@
 		</li>
 	@endforeach
 	</ul>
-	<h2>Pending</h2>
+	<h4>Pending</h4>
 	<ul>
 	@foreach ($pendingFriendships as $friendship)
 		@if ($user->id !== ($friendship->recipient->id))
@@ -22,7 +22,7 @@
 		@endif
 	@endforeach
 	</ul>
-	<h2>Friends</h2>
+	<h4>Friends</h4>
 	<ul>
 	@foreach ($acceptedFriendships as $friendship)
 		<li><a href="{{ action('UserController@show', ['id' => $friendship->recipient->id]) }}"/>{{$friendship->recipient->name}}</a>

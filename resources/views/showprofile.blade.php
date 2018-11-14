@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-  	<h1>Profile for: {{ $userRecord->name }} </h1>
+  	<h3>Profile: {{ $userRecord->name }} </h3>
     @if(\Auth::User()->id !== $userRecord->id)
       <form method="POST" action="../friendships">
         @csrf
@@ -36,6 +36,8 @@
   <br>
   <br>
   @if (Auth::user() && Auth::user()->id == $userRecord->id)
-    <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    <button type="button" class="btn btn-primary">
+      <a class="text-white" href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    </button>
   @endif
 @endsection
