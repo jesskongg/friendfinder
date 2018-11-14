@@ -38,7 +38,9 @@
             }
             results.appendChild(frag)
         });
+
         // What is this doing?
+        // Search for the course only if there is a input in the search bar.
         search.addEventListener('input', e => {
             if (e.inputType === null || e.inputType === undefined) {
                 redirectCourse(e.target.value)
