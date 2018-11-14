@@ -8,12 +8,17 @@ use App\Course;
 use App\Enrollment;
 use App\Interest;
 use Illuminate\Support\Facades\DB;
+use Auth;
 
 class SearchController extends Controller
 {
     // TODO: Move this to a controller that handles the dashboard
     public function index()
     {
+        // If admin user goes to '/' instead of '/admin', it redirects them to '/admin' (which is the admin version of 'home')
+        if (Auth::guard('admin')->check()) {
+            return redirect()->route('admin.dashboard');
+        }
         $courses = Course::select(['department', 'number'])->get();
         return view('welcome', ['courses' => $courses]);
     }
@@ -65,7 +70,7 @@ class SearchController extends Controller
 
     public function filterByInterest(Request $request)
     {
-        $users = [];   
+        $users = [];
         if ($request->interest)
         {
             /*
@@ -85,7 +90,7 @@ class SearchController extends Controller
                         ->join('interests', 'interests.id', 'user_interest.interest_id')
                         ->where('interests.type','=', $request->interest)
                         ->select(['name','email','type','users.id'])
-                        ->get();                       
+                        ->get();
         }
         return response() -> json(['data' => $users], 200);
     }

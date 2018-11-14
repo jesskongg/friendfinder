@@ -2,14 +2,16 @@
 
 @section('content')
   	<h1>Profile for: {{ $userRecord->name }} </h1>
-    @if(\Auth::User()->id !== $userRecord->id)
-      <form method="POST" action="../friendships">
-        @csrf
-        <input type="hidden" name="user" value={{$userRecord->id}} />
-				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-					<button type="submit">Add Friend</button>
-				@endif
-      </form>
+    @if(!Auth::guard('admin')->check())
+      @if(\Auth::User()->id !== $userRecord->id)
+        <form method="POST" action="../friendships">
+          @csrf
+          <input type="hidden" name="user" value={{$userRecord->id}} />
+  				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+  					<button type="submit">Add Friend</button>
+  				@endif
+        </form>
+      @endif
     @endif
   	<p>Email: {{ $userRecord->email }}<p>
   	<p>Major: {{ $userRecord->major }}<p>
@@ -35,7 +37,11 @@
     </ul>
   <br>
   <br>
-  @if (Auth::user() && Auth::user()->id == $userRecord->id)
-    <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+  @if(!Auth::guard('admin')->check())
+    @if(Auth::user() && Auth::user()->id == $userRecord->id)
+      <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    @endif
+  @else
+    <a href="/users/{{$userRecord->id}}/edit">Edit Profile</a>
   @endif
 @endsection

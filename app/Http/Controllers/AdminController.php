@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
-class AdminController extends Controller
+
+// May want to make AdminController only inherit the UserController methods it actually needs
+class AdminController extends UserController
 {
     /**
      * Create a new controller instance.
@@ -22,6 +25,9 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return view('admin-dashboard');
+        $allUsers = DB::table('users')->get();
+        // dd($allUsers);
+
+        return view('admin/admin-dashboard', compact('allUsers'));
     }
 }

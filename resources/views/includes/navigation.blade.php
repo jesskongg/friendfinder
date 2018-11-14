@@ -12,6 +12,9 @@
             <a href="{{ route('login') }}">{{ __('Login') }}</a>
         </li>
         <li>
+            <a href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
+        </li>
+        <li>
             @if (Route::has('register'))
                 <a href="{{ route('register') }}">{{ __('Register') }}</a>
             @endif
