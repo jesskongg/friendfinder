@@ -20,9 +20,7 @@
     window.onload = function() {
         var search = document.getElementById('search')
         var results = document.getElementById('courses')
-        // WARNING: template tag's id seem to be affected after using section
-        // var templateContent = document.getElementById("coursestemplate").content
-        var templateContent = document.getElementById('app').childNodes[0]
+        var templateContent = document.getElementById('coursestemplate')
         search.addEventListener('keyup', e => {
             var input = new RegExp(search.value.trim(), 'i')
             var options = templateContent.cloneNode(true)
@@ -64,14 +62,14 @@
 @endsection()
 
 @section('content')
-<template id="coursestemplate">
+<div id="coursestemplate" style="display:none;">
     <?php
         foreach ($courses as $course) {
             $value = strtoupper($course->department) . "-" . strtoupper($course->number);
             echo "<option value='$value'>";
         }
     ?>
-</template>
+</div>
 <input id="search" type="text" name="search" list="courses" class="search_center" placeholder="Eg. CMPT-470"/>
 <datalist id="courses">
 </datalist>
