@@ -30,7 +30,7 @@
             for (let i = 1; i < options.childNodes.length; ++i) {
                 if (frag.children.length > 6) break
                 if (input.test(options.childNodes[i].value)) {
-                    frag.appendChild(options.childNodes[i])                    
+                    frag.appendChild(options.childNodes[i])
                 }
             }
             results.appendChild(frag)
@@ -61,15 +61,19 @@
 @endsection()
 
 @section('content')
-<div id="coursestemplate" style="display:none;">
-    <?php
-        foreach ($courses as $course) {
-            $value = strtoupper($course->department) . " " . strtoupper($course->number);
-            echo "<option value='$value'>";
-        }
-    ?>
-</div>
-<input id="search" type="text" name="search" list="courses" class="search_center form-control" placeholder="Eg. CMPT 470"/>
-<datalist id="courses">
-</datalist>
+  <center>
+    <h1>Welcome to SFU CS FriendFinder</h1>
+    <h4>Select a course below to begin finding friends</h4>
+  </center>
+  <div id="coursestemplate" style="display:none;">
+      <?php
+          foreach ($courses as $course) {
+              $value = strtoupper($course->department) . " " . strtoupper($course->number);
+              echo "<option value='$value'>";
+          }
+      ?>
+  </div>
+  <input id="search" type="text" name="search" list="courses" class="search_center form-control" placeholder="Eg. CMPT 470"/>
+  <datalist id="courses">
+  </datalist>
 @endsection

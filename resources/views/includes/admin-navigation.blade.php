@@ -5,14 +5,27 @@
         margin: 0px 10px 0px 10px;
     }
 </style>
-<ul class="navigation-menu">
-    <li><a href="/" >Admin Dashboard</a></li>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+    <a class="nav-link text-light" href="/" >Admin Dashboard</a>
+    @guest
         <li>
-            <a href="{{ route('admin.logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                {{ __('Logout') }}
-            </a>
-            <form id="logout-form" action="{{ route('admin.logout') }}" method="GET" style="display: none;">
-                @csrf
-            </form>
+            <a href="{{ route('login') }}">{{ __('Login') }}</a>
         </li>
+        <li>
+            <a href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
+        </li>
+        <li>
+            @if (Route::has('register'))
+                <a href="{{ route('register') }}">{{ __('Register') }}</a>
+            @endif
+        </li>
+    @else
+        <a class="nav-link text-light" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+            {{ __('Logout') }}
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+        </form>
+    @endguest
 </ul>
+</nav>

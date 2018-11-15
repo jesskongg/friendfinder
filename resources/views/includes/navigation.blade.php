@@ -30,8 +30,5 @@
             @csrf
         </form>
     @endguest
-<<<<<<< HEAD
 </ul>
-=======
 </nav>
->>>>>>> 24e96344d89d3dfec9db73fae6d5bc8136ca47c4

@@ -13,11 +13,17 @@
         </form>
       @endif
     @endif
-  	<p>Email: {{ $userRecord->email }}<p>
-  	<p>Major: {{ $userRecord->major }}<p>
-  	<p>Minor: {{ $userRecord->minor }}<p>
-  	<p>Bio: {{ $userRecord->bio }}<p>
-  	<p>Tags</p>
+  	<p><strong>Email:</strong> {{ $userRecord->email }}</p>
+  	<p><strong>Major:</strong> {{ $userRecord->major }}</p>
+  	<p><strong>Minor:</strong>  {{ $userRecord->minor }}</p>
+  	<p><strong>Bio:</strong></p>
+      <div class="card" style="max-width:20%;">
+        <div class="card-body">
+          {{ $userRecord->bio }}
+        </div>
+      </div>
+      <br>
+  	<p><strong>Tags</strong></p>
   	@if($interests)
   	<ul>
     	@foreach($interests as $interest)
@@ -27,7 +33,7 @@
 	  </ul>
   <br>
   <br>
-    <p>Enrolled Courses</p>
+    <p><strong>Enrolled Courses</strong></p>
     @if($enrollments)
     <ul>
       @foreach($enrollments as $enrollment)
@@ -37,18 +43,15 @@
     </ul>
   <br>
   <br>
-<<<<<<< HEAD
   @if(!Auth::guard('admin')->check())
     @if(Auth::user() && Auth::user()->id == $userRecord->id)
-      <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    <a href="{{ action("UserController@edit", ["id" => $userRecord->id]) }}">
+      <button type="button" class="btn btn-success">Edit Profile</button>
+    </a>
     @endif
   @else
-    <a href="/users/{{$userRecord->id}}/edit">Edit Profile</a>
-=======
-  @if (Auth::user() && Auth::user()->id == $userRecord->id)
-    <button type="button" class="btn btn-primary">
-      <a class="text-white" href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
-    </button>
->>>>>>> 24e96344d89d3dfec9db73fae6d5bc8136ca47c4
+  <a href="{{ action("UserController@edit", ["id" => $userRecord->id]) }}">
+    <button type="button" class="btn btn-success">Edit Profile</button>
+  </a>
   @endif
 @endsection
