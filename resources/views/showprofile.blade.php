@@ -35,6 +35,37 @@
     </ul>
   <br>
   <br>
+  <p>Github repository</p>
+  <ul>
+    <?php
+      // Do we assume that users' git ids are the same as their emails? 
+      $user_id = explode('@', $userRecord->email)[0];
+      $url = "https://api.github.com/users/".$user_id."/repos";
+      # https://stackoverflow.com/questions/37141315/file-get-contents-gets-403-from-api-github-com-every-time
+      try
+      {
+        $result = json_decode(file_get_contents($url, false, stream_context_create(['http' => ['method' => 'GET', 'header' => ['User-Agent: PHP']]])));
+        if(!empty($result))
+        {
+          foreach($result as $repo)
+          {
+            echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
+          }       
+        }
+        else
+        {
+          echo "No Repo";
+        } 
+      }
+      catch (Exception $e)
+      {
+        //echo "Error: ".$e;
+        echo "No github account";
+      }
+    ?>
+  </ul>
+  <br>
+  <br>
   @if (Auth::user() && Auth::user()->id == $userRecord->id)
     <button type="button" class="btn btn-primary">
       <a class="text-white" href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
