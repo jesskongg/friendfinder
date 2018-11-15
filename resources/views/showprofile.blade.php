@@ -37,11 +37,18 @@
     </ul>
   <br>
   <br>
+<<<<<<< HEAD
   @if(!Auth::guard('admin')->check())
     @if(Auth::user() && Auth::user()->id == $userRecord->id)
       <a href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
     @endif
   @else
     <a href="/users/{{$userRecord->id}}/edit">Edit Profile</a>
+=======
+  @if (Auth::user() && Auth::user()->id == $userRecord->id)
+    <button type="button" class="btn btn-primary">
+      <a class="text-white" href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    </button>
+>>>>>>> 24e96344d89d3dfec9db73fae6d5bc8136ca47c4
   @endif
 @endsection

@@ -37,11 +37,15 @@ class SearchController extends Controller
                                 ->where('enrollments.course_id', '=', $course->id)
                                 ->select(['users.id', 'name', 'email'])
                                 ->get();
+                $interests = Interest::select('type')
+                                -> get();
+
                 return view('course', [
                     'department' => $course->department,
                     'number' => $course->number,
                     'description' => $course->description,
                     'students' => $students,
+                    'interests' => $interests,
                 ]);
             }
             return view('course');
@@ -71,25 +75,13 @@ class SearchController extends Controller
     public function filterByInterest(Request $request)
     {
         $users = [];
-        if ($request->interest)
+        if ($request->interests)
         {
-            /*
-            $course = Course::where('department', '=', $request->department)
-                ->where('number', '=', $request->number)
-                ->first();
-            $students = DB::table('enrollments')
-                            ->join('users', 'users.id', 'enrollments.user_id')
-                            ->join('courses', 'courses.id', 'enrollments.course_id')
-                            ->where('enrollments.course_id', '=', $course->id)
-                            ->select(['users.id', 'name', 'email'])
-                            ->get();
-            */
-
             $users = DB::table('user_interest')
                         ->join('users', 'users.id', 'user_interest.user_id')
                         ->join('interests', 'interests.id', 'user_interest.interest_id')
-                        ->where('interests.type','=', $request->interest)
-                        ->select(['name','email','type','users.id'])
+                        ->where('interests.type','=', $request->interests)
+                        ->select(['name','email','users.id'])
                         ->get();
         }
         return response() -> json(['data' => $users], 200);

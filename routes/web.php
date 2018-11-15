@@ -44,14 +44,5 @@ Route::resource('friendships', 'FriendshipController');
 Route::post('/confirm-friendship', 'FriendshipController@confirm');
 Route::post('/remove-friendship', 'FriendshipController@unfriend');
 
-// Specific routes to UserController resource controller
-// The proceeding routes can be replaced by the single line: Route::resource('users', 'UserController');
-// Route::put('/users/{id}', 'UserController@update');
-// Route::get('/users/{id}', 'UserController@show');
-// Route::get('/users/{id}',[
-//     'as' => 'users.show',
-//     'uses' => 'UserController@show'
-// ]);
-// Route::get('/users/{id}/edit', 'UserController@edit');
 
 ?>
