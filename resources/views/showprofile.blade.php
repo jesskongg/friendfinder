@@ -2,14 +2,16 @@
 
 @section('content')
   	<h3>Profile: {{ $userRecord->name }} </h3>
-    @if(\Auth::User()->id !== $userRecord->id)
-      <form method="POST" action="../friendships">
-        @csrf
-        <input type="hidden" name="user" value={{$userRecord->id}} />
-				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-					<button type="submit">Add Friend</button>
-				@endif
-      </form>
+    @if(isset(Auth::User()->id))
+      @if(Auth::User()->id !== $userRecord->id)
+        <form method="POST" action="../friendships">
+          @csrf
+          <input type="hidden" name="user" value={{$userRecord->id}} />
+  				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+  					<button type="submit">Add Friend</button>
+  				@endif
+        </form>
+      @endif
     @endif
   	<p>Email: {{ $userRecord->email }}<p>
   	<p>Major: {{ $userRecord->major }}<p>
@@ -33,39 +35,39 @@
       @endforeach
     @endif
     </ul>
-  <ul>
-    <?php
-      // Do we assume that users' git ids are the same as their emails? 
-      $user_id = $userRecord->github;
-      if ($user_id != null)
+  <?php
+    // Do we assume that users' git ids are the same as their emails? 
+    $user_id = $userRecord->github;
+    if ($user_id != null)
+    {
+      echo "<br><br><p>Github repository</p>";
+      $url = "https://api.github.com/users/".$user_id."/repos";
+      try
       {
-        echo "<br><br><p>Github repository</p>";
-        $url = "https://api.github.com/users/".$user_id."/repos";
-        try
+        # https://stackoverflow.com/questions/37141315/file-get-contents-gets-403-from-api-github-com-every-time
+        $result = json_decode(file_get_contents($url, false, stream_context_create(['http' => ['method' => 'GET', 'header' => ['User-Agent: PHP']]])));
+        if(!empty($result))
         {
-          # https://stackoverflow.com/questions/37141315/file-get-contents-gets-403-from-api-github-com-every-time
-          $result = json_decode(file_get_contents($url, false, stream_context_create(['http' => ['method' => 'GET', 'header' => ['User-Agent: PHP']]])));
-          if(!empty($result))
+          echo "<ul>";
+          foreach($result as $repo)
           {
-            foreach($result as $repo)
-            {
-              echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
-            }       
+            echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
           }
-          else
-          {
-            echo "No Repo";
-          } 
+          echo "</ul>";       
         }
-        catch (Exception $e)
+        else
         {
-          //echo "Error: ".$e;
-        }        
+          echo "No Repo";
+        } 
       }
-    ?>
-  </ul>
+      catch (Exception $e)
+      {
+        //echo "Error: ".$e;
+      }        
+    }
+  ?>
   @if($userRecord->linkedin != null)
-    <br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
+    <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
   @endif
   <br>
   <br>
