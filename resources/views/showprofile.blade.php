@@ -2,14 +2,16 @@
 
 @section('content')
   	<h3>Profile: {{ $userRecord->name }} </h3>
-    @if(\Auth::User()->id !== $userRecord->id)
-      <form method="POST" action="../friendships">
-        @csrf
-        <input type="hidden" name="user" value={{$userRecord->id}} />
-				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-					<button type="submit">Add Friend</button>
-				@endif
-      </form>
+    @if(isset(Auth::User()->id))
+      @if(Auth::User()->id !== $userRecord->id)
+        <form method="POST" action="../friendships">
+          @csrf
+          <input type="hidden" name="user" value={{$userRecord->id}} />
+  				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+  					<button type="submit">Add Friend</button>
+  				@endif
+        </form>
+      @endif
     @endif
   	<p>Email: {{ $userRecord->email }}<p>
   	<p>Major: {{ $userRecord->major }}<p>
@@ -65,7 +67,7 @@
     }
   ?>
   @if($userRecord->linkedin != null)
-    <br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
+    <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
   @endif
   <br>
   <br>
