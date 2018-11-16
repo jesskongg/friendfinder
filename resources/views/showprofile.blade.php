@@ -33,37 +33,37 @@
       @endforeach
     @endif
     </ul>
-  <ul>
-    <?php
-      // Do we assume that users' git ids are the same as their emails? 
-      $user_id = $userRecord->github;
-      if ($user_id != null)
+  <?php
+    // Do we assume that users' git ids are the same as their emails? 
+    $user_id = $userRecord->github;
+    if ($user_id != null)
+    {
+      echo "<br><br><p>Github repository</p>";
+      $url = "https://api.github.com/users/".$user_id."/repos";
+      try
       {
-        echo "<br><br><p>Github repository</p>";
-        $url = "https://api.github.com/users/".$user_id."/repos";
-        try
+        # https://stackoverflow.com/questions/37141315/file-get-contents-gets-403-from-api-github-com-every-time
+        $result = json_decode(file_get_contents($url, false, stream_context_create(['http' => ['method' => 'GET', 'header' => ['User-Agent: PHP']]])));
+        if(!empty($result))
         {
-          # https://stackoverflow.com/questions/37141315/file-get-contents-gets-403-from-api-github-com-every-time
-          $result = json_decode(file_get_contents($url, false, stream_context_create(['http' => ['method' => 'GET', 'header' => ['User-Agent: PHP']]])));
-          if(!empty($result))
+          echo "<ul>";
+          foreach($result as $repo)
           {
-            foreach($result as $repo)
-            {
-              echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
-            }       
+            echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
           }
-          else
-          {
-            echo "No Repo";
-          } 
+          echo "</ul>";       
         }
-        catch (Exception $e)
+        else
         {
-          //echo "Error: ".$e;
-        }        
+          echo "No Repo";
+        } 
       }
-    ?>
-  </ul>
+      catch (Exception $e)
+      {
+        //echo "Error: ".$e;
+      }        
+    }
+  ?>
   @if($userRecord->linkedin != null)
     <br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
   @endif
