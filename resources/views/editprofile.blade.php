@@ -42,6 +42,17 @@
   </div>
 
   <div class="form-row">
+    <div class="form-group col-md-4">
+      <label for="github">Github ID</label>
+      <input class="form-control" type="text" name="github" id="github" value="{{ $userRecord->github }}">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="linkedin">LinkedIn Profile</label>
+      <input class="form-control" type="text" name="linkedin" id="linkedin" value="{{ $userRecord->linkedin }}">
+    </div>
+  </div>
+
+  <div class="form-row">
     <div class="form-group col-md-8">
       <label for="bio">Bio</label>
       <textarea class="form-control" rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
