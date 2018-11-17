@@ -2,6 +2,12 @@
 
 @section('styles')
     <style>
+        .welcome-text {
+          color: white;
+        }
+        .container-fluid, html {
+          background-color: #A6192E;
+        }
         .search_center {
             position:absolute;
             top:40%;
@@ -61,10 +67,12 @@
 @endsection()
 
 @section('content')
+<div class='welcome-text'>
   <center>
     <h1>Welcome to SFU CS FriendFinder</h1>
     <h4>Select a course below to begin finding friends</h4>
   </center>
+</div>
   <div id="coursestemplate" style="display:none;">
       <?php
           foreach ($courses as $course) {

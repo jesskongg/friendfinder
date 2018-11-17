@@ -8,17 +8,11 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
     <a class="nav-link text-light" href="/" >Home</a>
     @guest
-        <li>
-            <a href="{{ route('login') }}">{{ __('Login') }}</a>
-        </li>
-        <li>
-            <a href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
-        </li>
-        <li>
-            @if (Route::has('register'))
-                <a href="{{ route('register') }}">{{ __('Register') }}</a>
-            @endif
-        </li>
+        <a class="nav-link text-light" href="{{ route('login') }}">{{ __('Login') }}</a>
+        <a class="nav-link text-light" href="{{ route('admin.login') }}">{{ __('Admin Login') }}</a>
+        @if (Route::has('register'))
+          <a class="nav-link text-light" href="{{ route('register') }}">{{ __('Register') }}</a>
+        @endif
     @else
         Create a Meetup
         <a class="nav-link text-light" href="/users/{{Auth::user()->id}}">Profile</a>
