@@ -15,8 +15,8 @@
         @endif
     @else
         <a class="nav-link text-light" href="/meetups">Meetups</a>
-        <a class="nav-link text-light" href="/friendships">Friendships</a>
-        <a class="nav-link text-light" href="/users/{{Auth::user()->id}}">Profile ({{ Auth::user()->name }})</a>
+        <a class="nav-link text-light" href="/friendships">Friendships ( {{ count(Auth::user()->getFriendRequests()) }} )</a>
+        <a class="nav-link text-light" href="/users/{{Auth::user()->id}}">Profile ( {{ Auth::user()->name }} )</a>
         <a class="nav-link text-light" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             {{ __('Logout') }}
         </a>
