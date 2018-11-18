@@ -30,5 +30,9 @@ Route::resource('friendships', 'FriendshipController');
 Route::post('/confirm-friendship', 'FriendshipController@confirm');
 Route::post('/remove-friendship', 'FriendshipController@unfriend');
 
+// meetups
+// Route::resource('meetups', 'MeetupController');
+Route::get('/meetups', 'MeetupController@index');
+Route::post('/meetups', 'MeetupController@store');
 
 ?>

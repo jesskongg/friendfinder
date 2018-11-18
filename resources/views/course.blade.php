@@ -1,5 +1,12 @@
 @extends('layouts.app')
 
+@section('styles')
+<style>
+    .filter {
+        margin-bottom: 50px;
+    }
+</style>
+
 @section('scripts')
 <script defer>
     $(document).ready(function(){
@@ -69,21 +76,26 @@
         echo "</h3>";
     ?>
     <?php if (isset($students)): ?>
-        <form>
-            <h5>Filters</h5>
-            <?php
-                for ($i = 0; $i < count($interests); $i++){
-                    echo "<input type='checkbox' value='{$interests[$i]->type}'> {$interests[$i]->type}<br/>";
-                }
-            ?>
-            <div class="form-row">
-                <div class="form-group col-md-4">
-                    <label for="major">Others</label>
-                    <input class="form-control" id="others" type="textbox" name="others" value=""><br/>
-                    <input class="btn btn-success" type="button" id="button" value="Search">              
+        <div class="collapse" id="filter">
+            <form>
+                <h5>Filters</h5>
+                <?php
+                    for ($i = 0; $i < count($interests); $i++){
+                        echo "<input type='checkbox' value='{$interests[$i]->type}'> {$interests[$i]->type}<br/>";
+                    }
+                ?>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="major">Others</label>
+                        <input class="form-control" id="others" type="textbox" name="others" value=""><br/>
+                        <input class="btn btn-success" type="button" id="button" value="Search">              
+                    </div>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <button class="filter btn btn-primary" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter">
+            Toggle Filter
+        </button>
         <h5>Students</h5>
         <div id="result">
             <?php
