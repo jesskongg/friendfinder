@@ -2,30 +2,22 @@
 
 @section('content')
   	<h3>Profile: {{ $userRecord->name }} </h3>
-    @if(!Auth::guard('admin')->check())
-      @if(isset(Auth::User()->id))
-        @if(Auth::User()->id !== $userRecord->id)
-          <form method="POST" action="../friendships">
-            @csrf
-            <input type="hidden" name="user" value={{$userRecord->id}} />
-    				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-    					<button type="submit">Add Friend</button>
-    				@endif
-          </form>
-        @endif
+    @if(isset(Auth::User()->id))
+      @if(Auth::User()->id !== $userRecord->id)
+        <form method="POST" action="../friendships">
+          @csrf
+          <input type="hidden" name="user" value={{$userRecord->id}} />
+  				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+  					<button type="submit">Add Friend</button>
+  				@endif
+        </form>
       @endif
     @endif
-  	<p><strong>Email:</strong> {{ $userRecord->email }}</p>
-  	<p><strong>Major:</strong> {{ $userRecord->major }}</p>
-  	<p><strong>Minor:</strong>  {{ $userRecord->minor }}</p>
-  	<p><strong>Bio:</strong></p>
-      <div class="card" style="max-width:20%;">
-        <div class="card-body">
-          {{ $userRecord->bio }}
-        </div>
-      </div>
-      <br>
-  	<p><strong>Tags</strong></p>
+  	<p>Email: {{ $userRecord->email }}<p>
+  	<p>Major: {{ $userRecord->major }}<p>
+  	<p>Minor: {{ $userRecord->minor }}<p>
+  	<p>Bio: {{ $userRecord->bio }}<p>
+  	<p>Tags</p>
   	@if($interests)
   	<ul>
     	@foreach($interests as $interest)
@@ -35,7 +27,7 @@
 	  </ul>
   <br>
   <br>
-    <p><strong>Enrolled Courses</strong></p>
+    <p>Enrolled Courses</p>
     @if($enrollments)
     <ul>
       @foreach($enrollments as $enrollment)
@@ -44,7 +36,7 @@
     @endif
     </ul>
   <?php
-    // Do we assume that users' git ids are the same as their emails?
+    // Do we assume that users' git ids are the same as their emails? 
     $user_id = $userRecord->github;
     if ($user_id != null)
     {
@@ -61,17 +53,17 @@
           {
             echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
           }
-          echo "</ul>";
+          echo "</ul>";       
         }
         else
         {
           echo "No Repo";
-        }
+        } 
       }
       catch (Exception $e)
       {
         //echo "Error: ".$e;
-      }
+      }        
     }
   ?>
   @if($userRecord->linkedin != null)
@@ -79,15 +71,9 @@
   @endif
   <br>
   <br>
-  @if(!Auth::guard('admin')->check())
-    @if(Auth::user() && Auth::user()->id == $userRecord->id)
-    <a href="{{ action("UserController@edit", ["id" => $userRecord->id]) }}">
-      <button type="button" class="btn btn-success">Edit Profile</button>
-    </a>
-    @endif
-  @else
-  <a href="{{ action("UserController@edit", ["id" => $userRecord->id]) }}">
-    <button type="button" class="btn btn-success">Edit Profile</button>
-  </a>
+  @if (Auth::user() && Auth::user()->id == $userRecord->id)
+    <button type="button" class="btn btn-primary">
+      <a class="text-white" href="/users/{{Auth::user()->id}}/edit">Edit Profile</a>
+    </button>
   @endif
 @endsection

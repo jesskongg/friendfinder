@@ -30,11 +30,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('styles')
     @yield('scripts')
-    @if($user = Auth::guard('admin')->check())
-      @include('includes.admin-navigation')
-    @else
-      @include('includes.navigation')
-    @endif
+    @include('includes.navigation')
 </head>
 <body>
     <div id="app" class="container-fluid">
