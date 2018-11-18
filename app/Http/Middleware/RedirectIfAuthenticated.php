@@ -15,21 +15,12 @@ class RedirectIfAuthenticated
      * @param  string|null  $guard
      * @return mixed
      */
-     public function handle($request, Closure $next, $guard = null)
-     {
-           switch ($guard) {
-               case 'admin' :
-                   if (Auth::guard($guard)->check()) {
-                       return redirect()->route('admin.dashboard');
-                   }
-                   break;
-               default:
-                   // If user attempts to view an admin page, redirect them to the admin login page.
-                   if (Auth::guard($guard)->check()) {
-                       return redirect('admin/login');
-                   }
-                   break;
-           }
+    public function handle($request, Closure $next, $guard = null)
+    {
+        if (Auth::guard($guard)->check()) {
+            return redirect('/home');
+        }
+
         return $next($request);
-      }
+    }
 }
