@@ -171,6 +171,8 @@ class UserController extends Controller
         $user->major = $request->major ? $user->major : "";
         $user->minor = $request->minor ? $user->minor : "";
         $user->bio = $request->bio ? $user->bio : "";
+        $user->github = $request->github ? $user->github : null;
+        $user->linkedin = $request->linkedin ? $user->linkedin : null;
         $user->save();
         return redirect()->action('UserController@show', ['id' => $id]);
     }
