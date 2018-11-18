@@ -91,11 +91,8 @@ class UserController extends Controller
     public function edit($id)
     {
       $user = Auth::user();
-      if (!Auth::guard('admin')->check()) {
-        if ($user == null || $user->id != $id)
-          return redirect('/');
-      }
-
+      if ($user == null || $user->id != $id)
+        return redirect('/');
 
       // Check if the current user has added any enrolled courses to their profile
       $results = DB::table('enrollments')->where('user_id', $id)->get();
@@ -230,9 +227,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-      DB::table('users')->where('id', $id)->delete();
-      // dd("HELLO");
-      return redirect()->action('AdminController@index');
+        // Not needed.
     }
 
 }
