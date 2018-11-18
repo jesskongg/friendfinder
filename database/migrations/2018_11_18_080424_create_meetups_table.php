@@ -19,6 +19,8 @@ class CreateMeetupsTable extends Migration
             $table->string('title');
             $table->string('description');
             $table->string('location');
+            $table->integer('creator_id');
+            $table->date('date');
         });
     }
 

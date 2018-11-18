@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Meetup;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MeetupController extends Controller
 {
@@ -14,7 +16,10 @@ class MeetupController extends Controller
      */
     public function index()
     {
-        $meetups = Meetup::select(['title', 'description', 'location'])->get();
+        $meetups = DB::table('meetups')->join('users', 'meetups.creator_id', '=', 'users.id')
+                ->select('meetups.*', 'users.name AS username')
+                ->orderBy('date', 'desc')
+                ->get();
         return view('meetup', ['meetups' => $meetups]);
     }
 
@@ -36,14 +41,18 @@ class MeetupController extends Controller
      */
     public function store(Request $request)
     {
+        $user = Auth::user();
         $title = $request->title;
         $description = $request->description;
         $location = $request->location;
-        if (isset($title) && isset($description) && isset($location)) {
+        $date = $request->date;
+        if (isset($title) && isset($description) && isset($location) && isset($location) && isset($user)) {
             $meetup = new Meetup();
             $meetup->title = $title;
             $meetup->description = $description;
             $meetup->location = $location;
+            $meetup->creator_id = $user->id;
+            $meetup->date = $date;
             $meetup->save();
         }
         return redirect()->action('MeetupController@index');
@@ -91,6 +100,10 @@ class MeetupController extends Controller
      */
     public function destroy(Meetup $meetup)
     {
-        //
+        $user = Auth::user();
+        if ($user->id == $meetup->creator_id) {
+            $meetup->delete();
+        }        
+        return redirect()->action('MeetupController@index');
     }
 }
