@@ -2,12 +2,6 @@
 
 @section('styles')
     <style>
-        .welcome-text {
-          color: white;
-        }
-        .container-fluid, html {
-          background-color: #A6192E;
-        }
         .search_center {
             position:absolute;
             top:40%;
