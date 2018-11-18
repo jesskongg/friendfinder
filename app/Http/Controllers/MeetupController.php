@@ -6,6 +6,7 @@ use App\Meetup;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Validator;
 
 class MeetupController extends Controller
 {
@@ -45,6 +46,9 @@ class MeetupController extends Controller
         $title = $request->title;
         $description = $request->description;
         $location = $request->location;
+        Validator::make($request->all(), [
+            'date' => 'required|date_format:Y-m-d'
+        ])->validate();
         $date = $request->date;
         if (isset($title) && isset($description) && isset($location) && isset($location) && isset($user)) {
             $meetup = new Meetup();
