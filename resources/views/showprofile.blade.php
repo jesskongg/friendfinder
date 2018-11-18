@@ -8,7 +8,7 @@
           @csrf
           <input type="hidden" name="user" value={{$userRecord->id}} />
   				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-  					<button type="submit">Add Friend</button>
+  					<button type="submit" class="btn btn-primary">Add Friend</button>
   				@endif
         </form>
       @endif
@@ -37,6 +37,7 @@
     </ul>
   <?php
     // Do we assume that users' git ids are the same as their emails? 
+    // No
     $user_id = $userRecord->github;
     if ($user_id != null)
     {
@@ -67,7 +68,11 @@
     }
   ?>
   @if($userRecord->linkedin != null)
-    <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
+    @if (filter_var($userRecord->linkedin, FILTER_VALIDATE_URL) === FALSE)
+      <p>LinkedIn ID: {{$userRecord->linkedin}}</p>
+    @else
+      <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
+    @endif
   @endif
   <br>
   <br>
