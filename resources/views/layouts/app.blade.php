@@ -7,7 +7,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>SFU CS FriendFinder</title>
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -30,11 +30,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     @yield('styles')
     @yield('scripts')
-    @if($user = Auth::guard('admin')->check())
-      @include('includes.admin-navigation')
-    @else
-      @include('includes.navigation')
-    @endif
+    @include('includes.navigation')
 </head>
 <body>
     <div id="app" class="container-fluid">

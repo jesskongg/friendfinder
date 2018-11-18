@@ -68,11 +68,15 @@
     }
   ?>
   @if($userRecord->linkedin != null)
+<<<<<<< HEAD
+    <br><br><p><strong><a href={{$userRecord->linkedin}} target="_blank">LinkedIn Profile</a></strong></p>
+=======
     @if (filter_var($userRecord->linkedin, FILTER_VALIDATE_URL) === FALSE)
       <p>LinkedIn ID: {{$userRecord->linkedin}}</p>
     @else
-      <br><br><p><a href={{$userRecord->linkedin}} target="_blank">LinkedIn Profile</a></p>
+      <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
     @endif
+>>>>>>> 9a2c289ebcc56fa1f332b675c638a5093d8bc704
   @endif
   <br>
   <br>
