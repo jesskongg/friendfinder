@@ -48,7 +48,7 @@
     $user_id = $userRecord->github;
     if ($user_id != null)
     {
-      echo "<br><br><p>Github repository</p>";
+      echo "<br><br><p><strong>Github repository</strong></p>";
       $url = "https://api.github.com/users/".$user_id."/repos";
       try
       {
@@ -59,7 +59,7 @@
           echo "<ul>";
           foreach($result as $repo)
           {
-            echo "<li><a href = {$repo->html_url}>{$repo->name}</a></li>";
+            echo "<li><a href={$repo->html_url} target='_blank'>{$repo->name}</a></li>";
           }
           echo "</ul>";
         }
@@ -75,7 +75,7 @@
     }
   ?>
   @if($userRecord->linkedin != null)
-    <br><br><p><a href={{$userRecord->linkedin}}>LinkedIn Profile</a></p>
+    <br><br><p><strong><a href={{$userRecord->linkedin}} target="_blank">LinkedIn Profile</a></strong></p>
   @endif
   <br>
   <br>
