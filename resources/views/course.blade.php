@@ -111,6 +111,22 @@
                 }
             ?>
         </div>
+        <br><h5>Recommending</h5>
+        <div id="recommend">
+            <?php
+                if($recommendFriends != null)
+                {
+                    for($i = 0; $i < count($recommendFriends); $i++)
+                    {
+                        if(Auth::id() != $recommendFriends[$i]->id)
+                        {
+                            echo "<img src='/icon/user.png' class='avatar'>";
+                            echo "<a href=/users/{$recommendFriends[$i]->id}> {$recommendFriends[$i]->name} - {$recommendFriends[$i]->email}</a> </br>";
+                        }
+                    }
+                }
+            ?>
+        </div>
     <?php endif; ?>
 <?php else: ?>
     <h1>Course not found</h1>

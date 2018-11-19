@@ -7,6 +7,7 @@ use App\User;
 use App\Course;
 use App\Enrollment;
 use App\Interest;
+use Phpml\Clustering\KMeans;
 use Illuminate\Support\Facades\DB;
 use Auth;
 
@@ -40,12 +41,14 @@ class SearchController extends Controller
                 $interests = Interest::select('type')
                                 -> get();
 
+                $recommendFriends = $this->recommend($students, $interests);
                 return view('course', [
                     'department' => $course->department,
                     'number' => $course->number,
                     'description' => $course->description,
                     'students' => $students,
                     'interests' => $interests,
+                    'recommendFriends' => $recommendFriends,
                 ]);
             }
             return view('course');
@@ -80,10 +83,55 @@ class SearchController extends Controller
             $users = DB::table('user_interest')
                         ->join('users', 'users.id', 'user_interest.user_id')
                         ->join('interests', 'interests.id', 'user_interest.interest_id')
-                        ->where('interests.type','=', $request->interests)
+                        ->whereIn('interests.type', $request->interests)
                         ->select(['name','email','users.id'])
+                        ->distinct()
                         ->get();
         }
         return response() -> json(['data' => $users], 200);
+    }
+
+    // PHP is so slow that PCA cannot ben run. All features are binary features, so the dataset is very sparce. This algorithm is garbage.
+    public function recommend($students, $interests)
+    {
+        foreach($students as $student)
+        {
+            // Add randomness
+            for($i = 0; $i < count($interests); $i++)
+            {
+                $row[$i] = mt_rand(1,5);
+            }
+            $user_interests = DB::table('user_interest')
+                         -> where('user_id', '=', $student->id)
+                         -> select(['interest_id'])
+                         -> get();
+            foreach($user_interests as $user_interest)
+            {
+                $row[$user_interest->interest_id-1] = $row[$user_interest->interest_id-1] + 10;
+            }
+            $trainData[$student->id] = $row;
+        }
+        $kmeans = new KMeans(count($students)/5, KMeans::INIT_RANDOM);
+        $results = $kmeans->cluster($trainData);
+        foreach($results as $result)
+        {
+            if(isset($result[Auth::id()]))
+            {
+                $sameCluster = $result;
+                break;
+            }
+        }
+        if(empty($sameCluster))
+        {
+            return null;
+        }
+        else
+        {
+            $students = DB::table('users')
+                       -> whereIn('id', array_keys($sameCluster))
+                       -> select(['id','name', 'email'])
+                       -> get();
+            return $students;
+        }
     }
 }
