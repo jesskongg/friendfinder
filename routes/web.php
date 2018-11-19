@@ -51,4 +51,9 @@ Route::get('/meetups', 'MeetupController@index');
 Route::post('/meetups', 'MeetupController@store');
 Route::delete('/meetups', 'MeetupController@destroy');
 
+// credit
+Route::get('/credits', function() {
+    return view('credits');
+});
+
 ?>

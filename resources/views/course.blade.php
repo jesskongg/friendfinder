@@ -5,6 +5,11 @@
     .filter {
         margin-bottom: 50px;
     }
+    .avatar {
+        width: 50px;
+        height: 50px;
+        vertical-align: middle;
+    }
 </style>
 
 @section('scripts')
@@ -96,11 +101,12 @@
         <button class="filter btn btn-primary" type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter">
             Toggle Filter
         </button>
-        <h5>Students</h5>
+        <h4>Students</h4>
         <div id="result">
             <?php
                 for ($i = 0; $i < count($students); ++$i) 
                 {
+                    echo "<img src='/icon/user.png' class='avatar'>";
                     echo "<a href=/users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
                 }
             ?>
