@@ -17,9 +17,11 @@ class MeetupController extends Controller
      */
     public function index()
     {
+        // $currentDate = date("Y-m-d", time());
         $meetups = DB::table('meetups')->join('users', 'meetups.creator_id', '=', 'users.id')
                 ->select('meetups.*', 'users.name AS username')
-                ->orderBy('date', 'desc')
+                // ->whereDate('date', '>', $currentDate)
+                ->orderBy('date', 'asc')
                 ->get();
         return view('meetup', ['meetups' => $meetups]);
     }
