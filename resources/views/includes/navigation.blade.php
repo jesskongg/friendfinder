@@ -22,7 +22,7 @@
         <a class="nav-link text-light" href="/credits">Credits</a>
     @else
         <a class="nav-link text-light" href="/meetups"><img class='icon' src='/icon/meetup.png'>Meetups</a>
-        <a class="nav-link text-light" href="/friendships"><img class='icon' src='/icon/friendship.png'>Friendships ( {{ count(Auth::user()->getFriendRequests()) }} )</a>
+        <a class="nav-link text-light" href="/friendships"><img class='icon' src='/icon/friendship.png'>Friend Requests ( {{ count(Auth::user()->getFriendRequests()) }} )</a>
         <a class="nav-link text-light" href="/users/{{Auth::user()->id}}"><img class='icon' src='/icon/avatar.png'>Profile ( {{ Auth::user()->name }} )</a>
         <a class="nav-link text-light"href="/messages">Messages @include('messenger.unread-count')</a>
         <a class="nav-link text-light"href="/messages/create">Create New Message</a>

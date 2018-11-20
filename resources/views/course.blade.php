@@ -33,7 +33,7 @@
             if (others != null && others != "")
             {
                 // Check if it is already in the interests table. If not, insert it into the table
-                // need to call another controller                 
+                // need to call another controller
                 interests.push(others);
             }
             if (interests.length == 0)
@@ -50,9 +50,9 @@
                     type: 'GET',
                     url: '/course/filterByInterest',
                     data: {
-                        interests,                    
+                        interests,
                     },
-                    success: result => {                        
+                    success: result => {
                         for (let user of result.data) {
                             // From a Kyle's lesson: Use HASH MAP
                             for (let i = 0; i < students.length; i++)
@@ -67,7 +67,7 @@
                 })
             }
         });
-    });    
+    });
 </script>
 @endsection()
 
@@ -81,7 +81,7 @@
         echo "</h3>";
     ?>
     <?php if (isset($students)): ?>
-        <div class="collapse" id="filter">
+        <div class="collapse show" id="filter">
             <form>
                 <h5>Filters</h5>
                 <?php
@@ -93,7 +93,7 @@
                     <div class="form-group col-md-4">
                         <label for="major">Others</label>
                         <input class="form-control" id="others" type="textbox" name="others" value=""><br/>
-                        <input class="btn btn-success" type="button" id="button" value="Search">              
+                        <input class="btn btn-success" type="button" id="button" value="Search">
                     </div>
                 </div>
             </form>
@@ -104,14 +104,14 @@
         <h4>Students</h4>
         <div id="result">
             <?php
-                for ($i = 0; $i < count($students); ++$i) 
+                for ($i = 0; $i < count($students); ++$i)
                 {
                     echo "<img src='/icon/user.png' class='avatar'>";
                     echo "<a href=/users/{$students[$i]->id}> {$students[$i]->name} - {$students[$i]->email}</a> </br>";
                 }
             ?>
         </div>
-        <br><h5>Recommending</h5>
+        <!-- <br><h5>Recommending</h5> -->
         <div id="recommend">
             <?php
                 if($recommendFriends != null)

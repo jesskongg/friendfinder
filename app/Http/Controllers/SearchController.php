@@ -41,14 +41,14 @@ class SearchController extends Controller
                 $interests = Interest::select('type')
                                 -> get();
 
-                $recommendFriends = $this->recommend($students, $interests);
+                // $recommendFriends = $this->recommend($students, $interests);
                 return view('course', [
                     'department' => $course->department,
                     'number' => $course->number,
                     'description' => $course->description,
                     'students' => $students,
                     'interests' => $interests,
-                    'recommendFriends' => $recommendFriends,
+                    'recommendFriends' => null, // Toggled off for now
                 ]);
             }
             return view('course');
