@@ -9,11 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Hootlex\Friendships\Traits\Friendable;
 use App\Interest;
 use App\Course;
+use Cmgmyr\Messenger\Traits\Messagable;
 
 
 class User extends Authenticatable
 {
     use Friendable;
+    use Messagable;
 
     // Added for creation of many-to-many relationship with Interests
     public function interests()
