@@ -5,7 +5,7 @@
 	<h4>Requests</h4>
 	<ul>
 	@foreach ($requestedFriendships as $friendship)
-		<li>{{$friendship->sender->name}}
+		<li><a href="{{ action('UserController@show', ['id' => $friendship->sender->id]) }}"/>{{$friendship->sender->name}}</a>
 		<form action='/confirm-friendship' method='POST'>
 			@csrf
 	        <input type="hidden" name="friendship" value={{$friendship->id}} />
@@ -18,7 +18,7 @@
 	<ul>
 	@foreach ($pendingFriendships as $friendship)
 		@if ($user->id !== ($friendship->recipient->id))
-		<li>{{$friendship->recipient->name}}</li>
+		<li><a href="{{ action('UserController@show', ['id' => $friendship->recipient->id]) }}"/>{{$friendship->recipient->name}}</a></li>
 		@endif
 	@endforeach
 	</ul>
@@ -26,8 +26,6 @@
 	<ul>
 	@foreach ($acceptedFriendships as $friendship)
 		<li><a href="{{ action('UserController@show', ['id' => $friendship->recipient->id]) }}"/>{{$friendship->recipient->name}}</a>
-
-			<!-- {{$friendship->recipient->name}} -->
 
 		<form action='/remove-friendship' method='POST'>
 			@csrf
