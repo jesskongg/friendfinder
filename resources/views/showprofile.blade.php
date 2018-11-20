@@ -8,10 +8,19 @@
           <form method="POST" action="../friendships">
             @csrf
             <input type="hidden" name="user" value={{$userRecord->id}} />
-    				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
-    					<button type="submit">Add Friend</button>
+    				@if(! \Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)) && ! App\User::find($userRecord->id)->hasSentFriendRequestTo(\Auth::User()) && ! \Auth::User()->isFriendWith(App\User::find($userRecord->id)))
+    					<button type="submit" class="btn btn-primary">Add Friend</button>
     				@endif
+
+            @if(\Auth::User()->hasSentFriendRequestTo(App\User::find($userRecord->id)))
+              <h2><span class="badge badge-success">Friend Request Pending...</span></h2>
+            @endif
+
+            @if(\Auth::User()->hasFriendRequestFrom(App\User::find($userRecord->id)))
+              <button type="submit" class="btn btn-primary">Accept Friend Request</button>
+            @endif
           </form>
+
         @endif
       @endif
     @endif

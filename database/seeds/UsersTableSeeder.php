@@ -19,9 +19,9 @@ class UsersTableSeeder extends Seeder
             4 => 'Michael',
             5 => 'Daphne',
             6 => 'Tom', 
-            7 => 'Tom',
-            8 => 'Brad',
-            9 => 'Lucy',
+            7 => 'Hank',
+            8 => 'Solomon',
+            9 => 'Mary',
         ];
 
         $emails = [

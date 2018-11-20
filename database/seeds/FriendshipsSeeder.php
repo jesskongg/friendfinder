@@ -15,9 +15,6 @@ class FriendshipsSeeder extends Seeder
     {
         $testUser = User::find(11); // test user 1
         
-        $recipient = User::find(1);
-        $testUser->befriend($recipient);
-        $recipient->acceptFriendRequest($testUser);
         $recipient = User::find(2);
         $testUser->befriend($recipient);
         $recipient->acceptFriendRequest($testUser);
