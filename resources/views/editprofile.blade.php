@@ -3,7 +3,13 @@
 @section('styles')
     <style>
         .course {
-            margin: 0 0 10px 0;
+          margin: 0 0 10px 0;
+        }
+        #add-btn {
+          margin-top: 5px;
+        }
+        #enrollments {
+          list-style-type: none;
         }
     </style>
 @endsection()
@@ -58,54 +64,55 @@
       <textarea class="form-control" rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
     </div>
   </div>
-  <h3>Tags</h3>
-  Select all tags that apply to you<br>
-  @foreach ($dbInterests as $interest)
-    <input type="checkbox" name="selectedInterests[]" value="{{ $interest->type }}" {{in_array($interest->type,$interests)?'checked':''}}> {{ $interest->type }}<br>
-  @endforeach
-  <input class="btn btn-success" type="submit" name="Submit">
-</form>
-<br>
-<br>
-<h3>Add a Course</h3>
-@if ($errors->has('course'))
-  <div class="alert alert-danger">
-    {{ $errors->first('course') }}
-  </div>
-@endif
-@if ($errors->has('invalid_course'))
-  <div class="alert alert-danger">
-    {{ $errors->first('invalid_course') }}
-  </div>
-@endif
-@if ($errors->has('duplicate_course'))
-  <div class="alert alert-danger">
-    {{ $errors->first('duplicate_course') }}
-  </div>
-@endif
-<form action="{{ action("UserController@addCourse", $userRecord->id ) }}" method="POST">
-  @csrf
   <div class="form-row">
-    <div class="form-group col-md-4">
-      <label for="name">Course Code (ie: CMPT 470)</label>
-      <input class="form-control" type="text" name="course" id="course" required>
+    <div class="form-group col-md-2">
+      <h3>Tags</h3>
+      Select all tags that apply to you<br>
+      @foreach ($dbInterests as $interest)
+        <input type="checkbox" name="selectedInterests[]" value="{{ $interest->type }}" {{in_array($interest->type,$interests)?'checked':''}}> {{ $interest->type }}<br>
+      @endforeach
+      <input class="btn btn-primary" type="submit" name="Submit" value="Submit Profile">
+    </form>
+    </div>
+    <div class="form-group col-md-2">
+      <h3>Add a Course</h3>
+      @if ($errors->has('course'))
+        <div class="alert alert-danger">
+          {{ $errors->first('course') }}
+        </div>
+      @endif
+      @if ($errors->has('invalid_course'))
+        <div class="alert alert-danger">
+          {{ $errors->first('invalid_course') }}
+        </div>
+      @endif
+      @if ($errors->has('duplicate_course'))
+        <div class="alert alert-danger">
+          {{ $errors->first('duplicate_course') }}
+        </div>
+      @endif
+        <form action="{{ action("UserController@addCourse", $userRecord->id ) }}" method="POST">
+          @csrf
+          <label for="name">Course Code (ie: CMPT 470)</label>
+          <input class="form-control" type="text" name="course" id="course" required>
+          <input class="btn btn-success" id="add-btn" type="submit" name="Submit" value="Add">
+        </form>
+      </div>
+      <div class="form-group col-md-2">
+        @if($enrollments)
+          <h3>Remove a Course</h3>
+          <ul id="enrollments">
+            @foreach($enrollments as $enrollment)
+              <li class="course">{{ $enrollment["course"] }}
+                <a href="{{ action("UserController@removeCourse", ["user_id" => $userRecord->id, "course_id" => $enrollment["id"]]) }}">
+                  <button type="button" class="btn btn-danger btn-sm">Remove</button>
+                </a>
+              </li>
+            @endforeach
+          </ul>
+        @endif
+      </div>
     </div>
   </div>
-  <input class="btn btn-success" type="submit" name="Submit">
-</form>
-<br>
-<br>
-<h3>Enrolled Courses:</h3>
-@if($enrollments)
-<ul>
-  @foreach($enrollments as $enrollment)
-    <li class="course">{{ $enrollment["course"] }}
-      <a href="{{ action("UserController@removeCourse", ["user_id" => $userRecord->id, "course_id" => $enrollment["id"]]) }}">
-        <button type="button" class="btn btn-danger btn-sm">Remove</button>
-      </a>
-    </li>
-  @endforeach
-@endif
-</ul>
 
 @endsection
