@@ -10476,3 +10476,11 @@ a.text-dark:focus {
   margin-left: 5px;
 }
 
+.checkbox label {
+  margin-left: 5px;
+}
+
+.checkbox input {
+  margin-right: 3px;
+}
+
