@@ -1,6 +1,12 @@
 @extends('layouts.app')
 
 @section('styles')
+    <style>
+        .course {
+            margin: 0 0 10px 0;
+        }
+    </style>
+@endsection()
 
 @section('content')
 
@@ -52,6 +58,7 @@
       <textarea class="form-control" rows="4" cols="25" name="bio" id="bio">{{ $userRecord->bio }}</textarea>
     </div>
   </div>
+  <h3>Tags</h3>
   Select all tags that apply to you<br>
   @foreach ($dbInterests as $interest)
     <input type="checkbox" name="selectedInterests[]" value="{{ $interest->type }}" {{in_array($interest->type,$interests)?'checked':''}}> {{ $interest->type }}<br>
@@ -88,11 +95,15 @@
 </form>
 <br>
 <br>
-<p>Enrolled Courses:</p>
+<h3>Enrolled Courses:</h3>
 @if($enrollments)
 <ul>
   @foreach($enrollments as $enrollment)
-    <li>{{ $enrollment["course"] }} <a href="{{ action("UserController@removeCourse", ["user_id" => $userRecord->id, "course_id" => $enrollment["id"]]) }}">Remove</a></li>
+    <li class="course">{{ $enrollment["course"] }}
+      <a href="{{ action("UserController@removeCourse", ["user_id" => $userRecord->id, "course_id" => $enrollment["id"]]) }}">
+        <button type="button" class="btn btn-danger btn-sm">Remove</button>
+      </a>
+    </li>
   @endforeach
 @endif
 </ul>

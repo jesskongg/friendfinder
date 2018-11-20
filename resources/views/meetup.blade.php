@@ -47,8 +47,8 @@
             <h5 class="card-title">{{ $meetup->title }}<h6>
             <p class="card-text">Hosted By: {{ $meetup->username }}</p>
             <p class="card-text">{{ $meetup->description }}</p>
-            <p class="card-text">Location: {{ $meetup->location }}</p>
-            <p class="card-text">Time: {{ $meetup->date }}</p>
+            <p class="card-text"><img class='icon' src='/icon/location.png'>Location: {{ $meetup->location }}</p>
+            <p class="card-text"><img class='icon' src='/icon/calendar.png'>{{ $meetup->date }}</p>
             @if(isset(Auth::User()->id) && Auth::User()->id == $meetup->creator_id)
             <form action='{{ url("/meetups/$meetup->id") }}' method="POST">
                 @csrf
