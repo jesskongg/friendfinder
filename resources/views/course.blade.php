@@ -75,7 +75,7 @@
 <?php if (isset($department) && isset($number) && isset($description)): ?>
     <?php
         echo "<h3>";
-        echo strtoupper($department).' - ';
+        echo strtoupper($department).' ';
         echo $number.' - ';
         echo $description;
         echo "</h3>";
