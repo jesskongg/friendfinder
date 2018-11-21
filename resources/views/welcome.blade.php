@@ -30,6 +30,11 @@
             for (let i = 1; i < options.childNodes.length; ++i) {
                 if (frag.children.length > 6) break
                 if (input.test(options.childNodes[i].value)) {
+                    // HACK: for some reason, the 'input' event doesn't fire when
+                    // there is 1 selection and that the selection is the same as
+                    // the input text
+                    let value = options.childNodes[i].value.toLowerCase() + '  '
+                    options.childNodes[i].value = value
                     frag.appendChild(options.childNodes[i])
                 }
             }
@@ -75,7 +80,7 @@
           }
       ?>
   </div>
-  <input id="search" type="text" name="search" list="courses" class="search_center form-control" placeholder="Eg. CMPT 470"/>
+  <input id="search" type="text" name="search" list="courses" class="search_center form-control" placeholder="Eg. cmpt 470"/>
   <datalist id="courses">
   </datalist>
 @endsection
