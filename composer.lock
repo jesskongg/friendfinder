@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e67f01867de7854b82ed3e116d3346f5",
+    "content-hash": "a656c3fc553ccf099217e670095f2489",
     "packages": [
         {
             "name": "cmgmyr/messenger",
