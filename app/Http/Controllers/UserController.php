@@ -74,8 +74,8 @@ class UserController extends Controller
         $enrollments = array();
         foreach($results as $enrollment) {
           $getEnrollment = DB::table('courses')->where('id', $enrollment->course_id)->first();
-          if (!in_array($getEnrollment->id, $enrollments))
-          array_push($enrollments, strtoupper($getEnrollment->department) . ' ' . $getEnrollment->number);
+          if (!in_array($getEnrollment->number, $enrollments))
+          array_push($enrollments, $getEnrollment->number);
         }
       }
 

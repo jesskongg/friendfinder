@@ -48,7 +48,7 @@
     @if($enrollments)
     <ul>
       @foreach($enrollments as $enrollment)
-        <li>{{ $enrollment }}</li>
+        <li><a href="{{action('SearchController@courses', ['department' => 'cmpt', 'number' => $enrollment])}}">CMPT {{ $enrollment }}</a></li>
       @endforeach
     @endif
     </ul>
