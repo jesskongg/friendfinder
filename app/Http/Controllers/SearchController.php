@@ -40,15 +40,21 @@ class SearchController extends Controller
                                 ->get();
                 $interests = Interest::select('type')
                                 -> get();
-
-                // $recommendFriends = $this->recommend($students, $interests);
+                if(isset($students) && count($students))
+                {
+                    $recommendFriends = $this->recommend($students, $interests);
+                }
+                else
+                {
+                    $recommendFriends = null;
+                }
                 return view('course', [
                     'department' => $course->department,
                     'number' => $course->number,
                     'description' => $course->description,
                     'students' => $students,
                     'interests' => $interests,
-                    'recommendFriends' => null, // Toggled off for now
+                    'recommendFriends' => $recommendFriends, // Toggled off for now
                 ]);
             }
             return view('course');
@@ -111,7 +117,8 @@ class SearchController extends Controller
             }
             $trainData[$student->id] = $row;
         }
-        $kmeans = new KMeans(count($students)/5, KMeans::INIT_RANDOM);
+        count($students)<5?$numCluster=2:$numCluster=count($students)/5;
+        $kmeans = new KMeans($numCluster, KMeans::INIT_RANDOM);
         $results = $kmeans->cluster($trainData);
         foreach($results as $result)
         {

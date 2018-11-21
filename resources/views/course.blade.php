@@ -112,7 +112,7 @@
                 }
             ?>
         </div>
-        <!-- <br><h5>Recommending</h5> -->
+        <br><h5>Recommending</h5>
         <div id="recommend">
             <?php
                 if($recommendFriends != null)
