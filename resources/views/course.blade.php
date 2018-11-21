@@ -80,10 +80,11 @@
         echo $description;
         echo "</h3>";
     ?>
+    <br>
     <?php if (isset($students)): ?>
         <div class="collapse show" id="filter">
             <form>
-                <h5>Filters</h5>
+                <h5>Filter users enrolled in this course by interest</h5>
                 <?php
                     for ($i = 0; $i < count($interests); $i++){
                         echo "<input type='checkbox' value='{$interests[$i]->type}'> {$interests[$i]->type}<br/>";
