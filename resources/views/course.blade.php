@@ -92,8 +92,6 @@
                 ?>
                 <div class="form-row">
                     <div class="form-group col-md-4">
-                        <label for="major">Others</label>
-                        <input class="form-control" id="others" type="textbox" name="others" value=""><br/>
                         <input class="btn btn-success" type="button" id="button" value="Search">
                     </div>
                 </div>
