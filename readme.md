@@ -1,20 +1,10 @@
 # Friend Finder
+This is a Laravel web-app created by myself and 3 teammates for a CMPT 470 (Web Information Systems) project. The idea behind the app is to provide SFU CMPT students a convenient way to meet other students in their classes who share common interests and educational backgrounds.
 
-## Installation
+Users can search for friends in any class in the SFU CMPT catalogue and filter based on interests / educational background. Friendships can be created/deleted. Other features include user-to-user messaging, and public meetup announcemnets.
 
-1. Install XAMPP (produciton is on Ubuntu)
-    1. For Linux, [follow this guide](https://linoxide.com/ubuntu-how-to/install-xampp-stack-ubuntu-16-04-terminal/)
-2. Clone this repo into the `/opt/lampp/htdocs/` folder
-3. [Link PHP with this guide](https://www.quora.com/Do-I-need-to-install-PHP-after-installing-Xampp)
-4. `chmod -R 777 /opt/lampp/`
-5. Install Composer: `wget <latest version>`, then `php ~/Downloads/composer.phar --version`, then `cp ~/Downloads/composer.phar /usr/local/bin/composer`, and finally `sudo chmod +x /usr/local/bin/composer`
-6. `composer install` inside of the repo (htdocs/friendfinder)
-7. `cp .env.example .env`, and change the following .env things to 
-    `DB_DATABASE=homestead
-    DB_USERNAME=root
-    DB_PASSWORD=''`
-8. `mysql -u root` and `CREATE DATABASE homestead;`
-9. `composer dump-autoload`
-10. `php artisan migrate:fresh --seed `
-11. `php artisan key:generate`
-12. Now visit `localhost/friendfinder/public` or whatever IP you're at!
+# Credits
+- Kyle Moss
+- Nima Boscarino
+- Jason Li
+- Jun Goo Kim
